@@ -72,6 +72,21 @@ If a Unity MCP server is active in the session:
 
 ---
 
+## Before Acting on External Systems
+
+Before triggering any **irreversible or external operation**, pause and verify:
+
+| Operation | Check before acting |
+|-----------|-------------------|
+| Creating a GitHub repo | Ask: "Has this repo already been created?" |
+| Publishing to NPM | Ask: "Is this the correct version? Has the changelog been reviewed?" |
+| Deleting files or branches | Always require explicit user confirmation, even if they said "clean it up" |
+| Running scripts that modify the filesystem | Confirm the working directory is correct |
+
+The rule: **fast is good, but undoable is better.** One question before an irreversible action saves more time than fixing a mistake after.
+
+---
+
 ## Boundaries — What You Never Do
 
 - Never delete or overwrite files without explicit user approval.
