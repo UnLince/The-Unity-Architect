@@ -11,7 +11,39 @@
 
 ---
 
-## What is this?
+## You don't have to be a Unity expert to build great games.
+
+You just need the right architect in your corner.
+
+---
+
+Most people who want to make games hit the same wall: Unity is powerful, but it's brutal to learn. The documentation is dense. The errors are cryptic. The architecture decisions that feel fine today become the bugs you curse at 3am six months later.
+
+So you Google. You copy from Stack Overflow. You paste from ChatGPT without knowing if the pattern is good or five years outdated. The AI helps — but it doesn't *know* your project. It doesn't know Unity's quirks. And it definitely doesn't know best practices for a scalable codebase.
+
+**The Unity Architect fixes that.**
+
+It's a framework you install once and forget about. After that, your AI assistant stops being a generic code autocomplete and starts acting like a senior Unity developer who's shipped real games — one who asks the right questions before writing a line of code, follows proven architecture patterns, and knows exactly how to diagnose what's breaking and why.
+
+### For developers who don't know how to code yet
+
+You've heard of "vibe coding" — describing what you want and letting the AI build it. That works for small things. But without structure, the AI builds on sand. Three features in, everything breaks and the AI can't figure out why, because nobody taught it *how Unity actually works*.
+
+The Unity Architect gives the AI that knowledge. The result: you can describe the game you want to build, and the AI will architect it properly — not just make it work today, but make it *stay* working as your game grows.
+
+**You can build a complete game. Almost entirely through conversation.**
+
+### For developers who know Unity well
+
+You know what good architecture looks like. You've refactored enough bad code to have opinions. What you don't want is to explain ScriptableObject event systems, object pooling patterns, or DOTS diagnostics to an AI every single session.
+
+The Unity Architect pre-loads all of that. The AI reads the skill files before acting, follows your established patterns, runs diagnostic scripts when something breaks, and stops making the junior mistakes that slow you down.
+
+**Less time explaining. More time building.**
+
+---
+
+### What is this, technically?
 
 **The Unity Architect** is a plug-and-play framework that transforms any AI coding assistant (Cursor, Antigravity/Gemini, Claude) into a **senior Unity architect and debugger**.
 
@@ -31,6 +63,7 @@ npx the-unity-architect
 ```
 
 That's it. The installer will:
+
 1. Create a `skills/` folder with expert AI guidance files
 2. Create an `execution/` folder with diagnostic scripts
 3. Inject rules into your AI tool's config so it reads the skills automatically
@@ -56,6 +89,7 @@ npx the-unity-architect --force     # Skip Unity project detection, install anyw
 Each skill folder contains a `SKILL.md` (the main AI directive) plus detailed reference modules:
 
 **Systematic Debugging modules:**
+
 - `01-scientific-method-and-logs.md` — Hypothesis-driven debugging with Unity logs
 - `02-state-and-serialization.md` — Inspector state, serialization pitfalls
 - `03-memory-and-gc-profiling.md` — Memory leaks, GC pressure, Profiler workflow
@@ -63,6 +97,7 @@ Each skill folder contains a `SKILL.md` (the main AI directive) plus detailed re
 - `05-rendering-and-gpu-bottlenecks.md` — GPU profiling and render pipeline issues
 
 **Architecture & Best Practices modules:**
+
 - `01-planning-and-workflow.md` — Technical planning before coding
 - `02-clean-code-and-conventions.md` — Naming, SOLID, Unity conventions
 - `03-core-design-patterns.md` — ScriptableObject events, State Machine, Command pattern

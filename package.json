@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "An expert Unity AI agent framework: skills, best practices, and utility scripts for AI-assisted Unity development with tools like Antigravity, Cursor, and Unity MCP.",
   "bin": {
-    "unity-architect": "./bin/install.js"
+    "unity-architect": "bin/install.js"
   },
   "scripts": {
     "test": "node bin/install.js --dry-run"
