@@ -1,0 +1,36 @@
+{
+  "name": "the-unity-architect",
+  "version": "1.0.0",
+  "description": "An expert Unity AI agent framework: skills, best practices, and utility scripts for AI-assisted Unity development with tools like Antigravity, Cursor, and Unity MCP.",
+  "bin": {
+    "unity-architect": "./bin/install.js"
+  },
+  "scripts": {
+    "test": "node bin/install.js --dry-run"
+  },
+  "keywords": [
+    "unity",
+    "unity3d",
+    "ai-agent",
+    "cursor",
+    "antigravity",
+    "mcp",
+    "game-development",
+    "skills",
+    "best-practices",
+    "debugging"
+  ],
+  "author": "UnLince",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/UnLince/The-Unity-Architect.git"
+  },
+  "bugs": {
+    "url": "https://github.com/UnLince/The-Unity-Architect/issues"
+  },
+  "homepage": "https://github.com/UnLince/The-Unity-Architect#readme",
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
