@@ -1,0 +1,31 @@
+# Dependencies
+node_modules/
+package-lock.json
+
+# Debug/Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# Internal Project Management & Personal (Private)
+Contexto/
+audit/
+otros/
+memory.md
+agents.md
+.npmrc
+creando un repo comunitario github.md
+install.py
+
+# Editor/System
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+.gemini/
+dist/
+.env
+
+# Clean repository structure
+/audit/
