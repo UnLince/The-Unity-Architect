@@ -136,58 +136,74 @@ function injectAIConfig(projectRoot, markers) {
 
 // ─── Main ─────────────────────────────────────────────────────────────────────
 function main() {
-  const projectRoot = process.cwd();
+  try {
+    const projectRoot = process.cwd();
 
-  console.log('');
-  console.log('\x1b[1m\x1b[35m  ████████╗██╗  ██╗███████╗    ██╗   ██╗███╗   ██╗██╗████████╗██╗   ██╗\x1b[0m');
-  console.log('\x1b[35m     ██╔══╝██║  ██║██╔════╝    ██║   ██║████╗  ██║██║╚══██╔══╝╚██╗ ██╔╝\x1b[0m');
-  console.log('\x1b[35m     ██║   ███████║█████╗      ██║   ██║██╔██╗ ██║██║   ██║    ╚████╔╝ \x1b[0m');
-  console.log('\x1b[35m     ██║   ██╔══██║██╔══╝      ██║   ██║██║╚██╗██║██║   ██║     ╚██╔╝  \x1b[0m');
-  console.log('\x1b[35m     ██║   ██║  ██║███████╗    ╚██████╔╝██║ ╚████║██║   ██║      ██║   \x1b[0m');
-  console.log('\x1b[35m     ╚═╝   ╚═╝  ╚═╝╚══════╝     ╚═════╝ ╚═╝  ╚═══╝╚═╝   ╚═╝      ╚═╝   \x1b[0m');
-  console.log('\x1b[1m                      A R C H I T E C T  v1.0.1\x1b[0m');
-  console.log('');
+    console.log('');
+    console.log('\x1b[1m\x1b[35m  ████████╗██╗  ██╗███████╗    ██╗   ██╗███╗   ██╗██╗████████╗██╗   ██╗\x1b[0m');
+    console.log('\x1b[35m     ██╔══╝██║  ██║██╔════╝    ██║   ██║████╗  ██║██║╚══██╔══╝╚██╗ ██╔╝\x1b[0m');
+    console.log('\x1b[35m     ██║   ███████║█████╗      ██║   ██║██╔██╗ ██║██║   ██║    ╚████╔╝ \x1b[0m');
+    console.log('\x1b[35m     ██║   ██╔══██║██╔══╝      ██║   ██║██║╚██╗██║██║   ██║     ╚██╔╝  \x1b[0m');
+    console.log('\x1b[35m     ██║   ██║  ██║███████╗    ╚██████╔╝██║ ╚████║██║   ██║      ██║   \x1b[0m');
+    console.log('\x1b[35m     ╚═╝   ╚═╝  ╚═╝╚══════╝     ╚═════╝ ╚═╝  ╚═══╝╚═╝   ╚═╝      ╚═╝   \x1b[0m');
+    console.log('\x1b[1m                      A R C H I T E C T  v1.0.1\x1b[0m');
+    console.log('');
 
-  if (isDryRun) log.warn('Running in DRY-RUN mode — no files will be modified.\n');
+    if (isDryRun) log.warn('Running in DRY-RUN mode — no files will be modified.\n');
 
-  // Safety check: is this a Unity project?
-  const hasUnityFolders = fs.existsSync(path.join(projectRoot, 'Assets'))
-    || fs.existsSync(path.join(projectRoot, 'ProjectSettings'));
+    // Safety check: is this a Unity project?
+    const hasUnityFolders = fs.existsSync(path.join(projectRoot, 'Assets'))
+      || fs.existsSync(path.join(projectRoot, 'ProjectSettings'));
 
-  if (!hasUnityFolders) {
-    log.warn('This does not look like a Unity project (no Assets/ or ProjectSettings/ folder found).');
-    log.warn('Run from the root of your Unity project, or use --force to skip this check.');
-    if (!isForce) process.exit(1);
+    if (!hasUnityFolders) {
+      log.warn('This does not look like a Unity project (no Assets/ or ProjectSettings/ folder found).');
+      log.warn('Run from the root of your Unity project, or use --force to skip this check.');
+      if (!isForce) process.exit(1);
+    }
+
+    // ── Step 1: Copy Skills ─────────────────────────────────────────────────────
+    log.step('Step 1/3 — Installing AI Skills');
+    const skillsSrc  = path.join(TEMPLATES_DIR, 'skills');
+    const skillsDest = path.join(projectRoot, 'skills');
+    copyFolderSync(skillsSrc, skillsDest);
+    log.success(`Skills installed → ${path.relative(projectRoot, skillsDest)}/`);
+
+    // ── Step 1.5: Copy Architect Kit ─────────────────────────────────────────────
+    if (fs.existsSync(path.join(TEMPLATES_DIR, 'Unity'))) {
+      const unitySrc = path.join(TEMPLATES_DIR, 'Unity', 'Editor');
+      const unityDest = hasUnityFolders ? path.join(projectRoot, 'Assets', 'Editor') : path.join(projectRoot, 'Unity', 'Editor');
+      copyFolderSync(unitySrc, unityDest);
+      log.success(`Architect Kit tools installed → ${path.relative(projectRoot, unityDest)}/`);
+    }
+
+    // ── Step 2: Copy Execution Scripts ─────────────────────────────────────────
+    log.step('Step 2/3 — Installing Execution Scripts');
+    const execSrc  = path.join(TEMPLATES_DIR, 'execution');
+    const execDest = path.join(projectRoot, 'execution');
+    copyFolderSync(execSrc, execDest);
+    log.success(`Scripts installed → ${path.relative(projectRoot, execDest)}/`);
+
+    // ── Step 3: Inject AI Config ────────────────────────────────────────────────
+    log.step('Step 3/3 — Configuring AI Agent');
+    const markers = detectProjectType(projectRoot);
+    injectAIConfig(projectRoot, markers);
+
+    // ── Done ────────────────────────────────────────────────────────────────────
+    console.log('');
+    console.log('\x1b[1m\x1b[32m  ✔ The Unity Architect is ready. Your AI is now a Unity expert.\x1b[0m');
+    console.log('');
+    console.log('  \x1b[2mNext steps:\x1b[0m');
+    console.log('  1. Open your project in Cursor / Antigravity / Claude');
+    console.log('  2. The AI will automatically read skills/ for guidance');
+    console.log('  3. Run scripts in execution/ for diagnostics: node execution/unity-doctor.js');
+    console.log('');
+  } catch (error) {
+    console.log('');
+    log.error('Installation failed due to a system error:');
+    console.error(`  ${error.message}`);
+    log.info('Please check your file permissions or run with administrator privileges.');
+    process.exit(1);
   }
-
-  // ── Step 1: Copy Skills ─────────────────────────────────────────────────────
-  log.step('Step 1/3 — Installing AI Skills');
-  const skillsSrc  = path.join(TEMPLATES_DIR, 'skills');
-  const skillsDest = path.join(projectRoot, 'skills');
-  copyFolderSync(skillsSrc, skillsDest);
-  log.success(`Skills installed → ${path.relative(projectRoot, skillsDest)}/`);
-
-  // ── Step 2: Copy Execution Scripts ─────────────────────────────────────────
-  log.step('Step 2/3 — Installing Execution Scripts');
-  const execSrc  = path.join(TEMPLATES_DIR, 'execution');
-  const execDest = path.join(projectRoot, 'execution');
-  copyFolderSync(execSrc, execDest);
-  log.success(`Scripts installed → ${path.relative(projectRoot, execDest)}/`);
-
-  // ── Step 3: Inject AI Config ────────────────────────────────────────────────
-  log.step('Step 3/3 — Configuring AI Agent');
-  const markers = detectProjectType(projectRoot);
-  injectAIConfig(projectRoot, markers);
-
-  // ── Done ────────────────────────────────────────────────────────────────────
-  console.log('');
-  console.log('\x1b[1m\x1b[32m  ✔ The Unity Architect is ready. Your AI is now a Unity expert.\x1b[0m');
-  console.log('');
-  console.log('  \x1b[2mNext steps:\x1b[0m');
-  console.log('  1. Open your project in Cursor / Antigravity / Claude');
-  console.log('  2. The AI will automatically read skills/ for guidance');
-  console.log('  3. Run scripts in execution/ for diagnostics: node execution/unity-doctor.js');
-  console.log('');
 }
 
 main();

@@ -173,7 +173,7 @@ Code and JSON files tell the AI *what* the game is. But they don't explain *why*
 Instead of wasting tokens trying to update the wiki on every message, the AI uses **Triggers**:
 - **Trigger 1 (Feature Finalization):** When the AI finishes writing a Game Design Document (GDD), it automatically updates the Wiki's `Index.md` and `Log.md`, and categorizes the new systems.
 - **Trigger 2 (Architecture Decisions):** When you and the AI agree on a major technical pattern, the AI writes an Architecture Decision Record (ADR) in `Docs/Wiki/ADR/` so it never forgets the technical context.
-- **Trigger 3 (Manual Librarian):** You can ask the AI to "update the wiki" at the end of a session to clean up the lore, systems, and glosarry.
+- **Trigger 3 (Manual Librarian):** You can ask the AI to "update the wiki" at the end of a session to clean up the lore, systems, and glossary.
 
 This gives the AI a persistent "Mega-Brain" across long development cycles, without sacrificing coding speed.
 
@@ -184,11 +184,15 @@ This gives the AI a persistent "Mega-Brain" across long development cycles, with
 | Tool | Config File Created/Updated |
 |------|-----------------------------|
 | **Cursor** | `.cursorrules` |
-| **Antigravity (Gemini)** | `.gemini/agents.md` |
+| **Antigravity / Gemini** | `.gemini/agents.md` |
 | **Claude Code** | `CLAUDE.md` |
 | **Windsurf** | `.windsurfrules` |
 
 If none are detected, defaults to creating `.cursorrules`.
+
+```text
+                      A R C H I T E C T  v1.2.1
+```
 
 ---
 
@@ -212,36 +216,29 @@ iwr https://raw.githubusercontent.com/UnLince/The-Unity-Architect/main/install.p
 
 ```
 The-Unity-Architect/
-├── package.json              # NPM package config (npx entry point)
 ├── bin/
-│   └── install.js            # CLI installer script
-├── templates/
-│   ├── ai-config/
-│   │   └── injection.md      # AI rules injected into your config files
-│   ├── skills/
-│   │   ├── unity-systematic-debugging/
-│   │   ├── unity-architecture-and-best-practices/
-│   │   ├── unity-ui-toolkit/
-│   │   └── unity-feature-pipeline/
-│   ├── Unity/
-│   │   └── Editor/
-│   │       └── TheUnityArchitect/
-│   │           └── ArchitectKitSceneInsight.cs
-│   └── execution/
-│       ├── unity-doctor.js
-│       ├── unity-audit.js
-│       ├── unity-project-graph.js
-│       ├── package-audit.js
-│       ├── parse_editor_log.py
-│       ├── find_missing_scripts.py
-│       └── scaffold_repo.py
+│   └── install.js            # CLI installer script (Source of truth for npx)
 ├── install.py                # Python alternative installer
-└── README.md
+├── templates/
+│   ├── ai-config/            # AI rules injected into your project
+│   ├── skills/               # The "Brains" of the architect
+│   ├── execution/            # Diagnostic and automation scripts
+│   │   ├── unity-doctor.js   # Health check
+│   │   ├── unity-audit.js    # Deep system analysis
+│   │   ├── scaffold_repo.py  # New project setup
+│   │   └── ...
+│   └── Unity/
+│       └── Editor/           # C# Editor Tools (Architect Kit)
 ```
 
----
+## How it works
 
-## Contributing
+When you run the installer, it creates a local environment in your Unity project:
+
+1.  **`skills/`**: A folder containing markdown instructions that your AI agent (Cursor, Claude, etc.) reads to understand Unity best practices.
+2.  **`execution/`**: A suite of JS/Python scripts you can run to audit your code, find missing scripts, or visualize your project graph.
+3.  **Architect Kit**: Automatically installs C# tools in `Assets/Editor/TheUnityArchitect` to allow the AI to "see" your scene hierarchy via JSON exports.
+4.  **AI Config Injection**: Injects a custom prompt into your `.cursorrules`, `.gemini/agents.md`, or `CLAUDE.md` to activate the Architect identity.
 
 Contributions are welcome! If you have Unity skills, patterns, or scripts to add:
 
