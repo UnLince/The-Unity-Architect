@@ -27,6 +27,18 @@ const log = {
   step:    (msg) => console.log(`\n\x1b[1m\x1b[35m▶ ${msg}\x1b[0m`),
 };
 
+function askQuestion(query) {
+  const rl = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout,
+  });
+
+  return new Promise(resolve => rl.question(`\n  \x1b[33m?\x1b[0m  ${query} `, answer => {
+    rl.close();
+    resolve(answer.toLowerCase());
+  }));
+}
+
 function copyFolderSync(from, to) {
   if (!fs.existsSync(to)) {
     if (!isDryRun) fs.mkdirSync(to, { recursive: true });
@@ -156,7 +168,7 @@ function injectAIConfig(projectRoot, markers) {
 }
 
 // ─── Main ─────────────────────────────────────────────────────────────────────
-function main() {
+async function main() {
   try {
     const projectRoot = process.cwd();
 
@@ -180,6 +192,22 @@ function main() {
       log.warn('This does not look like a Unity project (no Assets/ or ProjectSettings/ folder found).');
       log.warn('Run from the root of your Unity project, or use --force to skip this check.');
       if (!isForce) process.exit(1);
+    }
+
+    // Check for existing installation to offer clean install
+    const hasExisting = fs.existsSync(path.join(projectRoot, 'skills')) || fs.existsSync(path.join(projectRoot, 'execution'));
+    if (hasExisting && !isForce) {
+      const answer = await askQuestion('He detectado una instalación previa. ¿Quieres realizar una instalación limpia (borrar archivos antiguos)? [y/N]');
+      if (answer === 'y') {
+        log.info('Realizando limpieza...');
+        if (!isDryRun) {
+          if (fs.existsSync(path.join(projectRoot, 'skills'))) fs.rmSync(path.join(projectRoot, 'skills'), { recursive: true, force: true });
+          if (fs.existsSync(path.join(projectRoot, 'execution'))) fs.rmSync(path.join(projectRoot, 'execution'), { recursive: true, force: true });
+        }
+        log.success('Carpetas antiguas eliminadas.');
+      } else {
+        log.info('Continuando con la instalación (los archivos nuevos sobrescribirán a los antiguos).');
+      }
     }
 
     // ── Step 1: Copy Skills ─────────────────────────────────────────────────────

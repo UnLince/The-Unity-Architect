@@ -118,6 +118,22 @@ def main():
             templates  = os.path.join(repo_dir, "templates")
             ai_config  = os.path.join(templates, "ai-config", "injection.md")
 
+            # Step 0: Clean up old installation
+            has_existing = os.path.exists(os.path.join(project_root, "skills")) or \
+                           os.path.exists(os.path.join(project_root, "execution"))
+            
+            if has_existing and not FORCE:
+                print(f"\n  {C.YELLOW}?{C.RESET}  He detectado una instalación previa. ¿Quieres realizar una instalación limpia (borrar archivos antiguos)? [y/N] ", end="")
+                choice = input().lower()
+                if choice == 'y':
+                    log_info("Realizando limpieza...")
+                    if not DRY_RUN:
+                        if os.path.exists(os.path.join(project_root, "skills")): shutil.rmtree(os.path.join(project_root, "skills"))
+                        if os.path.exists(os.path.join(project_root, "execution")): shutil.rmtree(os.path.join(project_root, "execution"))
+                    log_ok("Carpetas antiguas eliminadas.")
+                else:
+                    log_info("Continuando con la instalación (los archivos nuevos sobrescribirán a los antiguos).")
+
             # Step 1: Skills
             log_step("Step 1/3 — Installing AI Skills")
             copy_folder(os.path.join(templates, "skills"), os.path.join(project_root, "skills"))
