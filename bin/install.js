@@ -126,8 +126,29 @@ function injectAIConfig(projectRoot, markers) {
     }
   }
 
+  // ── Windsurf ───────────────────────────────────────────────────────────────
+  if (markers.windsurf || isForce) {
+    const windsurfRules = path.join(projectRoot, '.windsurfrules');
+    if (!isDryRun) {
+      if (fs.existsSync(windsurfRules)) {
+        const content = fs.readFileSync(windsurfRules, 'utf-8');
+        if (!content.includes('The Unity Architect — AI Agent Rules')) {
+          fs.appendFileSync(windsurfRules, '\n\n' + injection);
+          log.success('Injected rules into existing .windsurfrules');
+        } else {
+          log.info('.windsurfrules already has Architect rules. Skipping injection.');
+        }
+      } else {
+        fs.writeFileSync(windsurfRules, injection);
+        log.success('Created .windsurfrules');
+      }
+    } else {
+      log.info('[dry-run] Would write .windsurfrules');
+    }
+  }
+
   // If none detected, default to creating all
-  if (!markers.cursor && !markers.antigravity && !markers.claude && !isForce) {
+  if (!markers.cursor && !markers.antigravity && !markers.claude && !markers.windsurf && !isForce) {
     log.warn('No AI tool config detected. Creating .cursorrules as default.');
     if (!isDryRun) fs.writeFileSync(path.join(projectRoot, '.cursorrules'), injection);
     else log.info('[dry-run] Would create default .cursorrules');
@@ -145,8 +166,8 @@ function main() {
     console.log('\x1b[35m     ██║   ███████║█████╗      ██║   ██║██╔██╗ ██║██║   ██║    ╚████╔╝ \x1b[0m');
     console.log('\x1b[35m     ██║   ██╔══██║██╔══╝      ██║   ██║██║╚██╗██║██║   ██║     ╚██╔╝  \x1b[0m');
     console.log('\x1b[35m     ██║   ██║  ██║███████╗    ╚██████╔╝██║ ╚████║██║   ██║      ██║   \x1b[0m');
-    console.log('\x1b[35m     ╚═╝   ╚═╝  ╚═╝╚══════╝     ╚═════╝ ╚═╝  ╚═══╝╚═╝   ╚═╝      ╚═╝   \x1b[0m');
-    console.log('\x1b[1m                      A R C H I T E C T  v1.0.1\x1b[0m');
+    console.log('\x1b[35m     ╚═╝   ╚═╝  ╚═╝╚══════╝     ╚═════╝ ╚═╝  ╚════╝╚═╝   ╚═╝      ╚═╝   \x1b[0m');
+    console.log('\x1b[1m                      A R C H I T E C T  v1.2.1\x1b[0m');
     console.log('');
 
     if (isDryRun) log.warn('Running in DRY-RUN mode — no files will be modified.\n');
