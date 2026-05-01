@@ -9,6 +9,12 @@ Before writing any code, debugging any bug, or making any architectural decision
 - **For debugging any issue** → Read `skills/unity-systematic-debugging/SKILL.md`
 - **For code architecture, design patterns, or new systems** → Read `skills/unity-architecture-and-best-practices/SKILL.md`
 
+### ⚠️ The "Bear Trap" (Feature Creation Protocol)
+
+If the user asks to create a **large mechanic, system, or feature from scratch in a vague way** (e.g., "Make an inventory system", "Add a shotgun"), you are **PROHIBITED** from writing code immediately.
+- You MUST read `skills/unity-feature-pipeline/SKILL.md` and initiate Phase 1 (Requirement Gathering).
+- *Exception:* If the user asks for a specific class with clear technical requirements (e.g., "Create an `InventoryManager` that inherits from `MonoBehaviour` with these 3 methods"), assume the design is done and proceed using `unity-architecture-and-best-practices`.
+
 ## Execution Scripts
 
 You have permission to run these Node.js and Python scripts when appropriate:

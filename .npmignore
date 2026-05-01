@@ -1,0 +1,12 @@
+# Exclude planning and local context files
+creando un repo comunitario github.md
+Contexto/
+agents.md
+memory.md
+otros/
+.gemini/
+scratch/
+.git/
+.vscode/
+package-lock.json
+node_modules/

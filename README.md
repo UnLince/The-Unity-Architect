@@ -109,6 +109,7 @@ npx the-unity-architect --force     # Skip Unity project detection, install anyw
 | `unity-systematic-debugging/` | Step-by-step scientific debugging protocol for Unity |
 | `unity-architecture-and-best-practices/` | Clean code, design patterns, and modular system architecture |
 | `unity-ui-toolkit/` | Unity 6 UI Toolkit best practices, GPU optimization, and Flexbox standards |
+| `unity-feature-pipeline/` | End-to-end product engineering: Design interrogation, GDD documentation, and Issue slicing |
 
 Each skill folder contains a `SKILL.md` (the main AI directive) plus detailed reference modules:
 
@@ -205,7 +206,8 @@ The-Unity-Architect/
 │   ├── skills/
 │   │   ├── unity-systematic-debugging/
 │   │   ├── unity-architecture-and-best-practices/
-│   │   └── unity-ui-toolkit/
+│   │   ├── unity-ui-toolkit/
+│   │   └── unity-feature-pipeline/
 │   ├── Unity/
 │   │   └── Editor/
 │   │       └── TheUnityArchitect/

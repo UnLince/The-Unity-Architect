@@ -66,8 +66,13 @@ function injectAIConfig(projectRoot, markers) {
     const cursorRules = path.join(projectRoot, '.cursorrules');
     if (!isDryRun) {
       if (fs.existsSync(cursorRules)) {
-        fs.appendFileSync(cursorRules, '\n\n' + injection);
-        log.success('Injected rules into existing .cursorrules');
+        const content = fs.readFileSync(cursorRules, 'utf-8');
+        if (!content.includes('The Unity Architect — AI Agent Rules')) {
+          fs.appendFileSync(cursorRules, '\n\n' + injection);
+          log.success('Injected rules into existing .cursorrules');
+        } else {
+          log.info('.cursorrules already has Architect rules. Skipping injection.');
+        }
       } else {
         fs.writeFileSync(cursorRules, injection);
         log.success('Created .cursorrules');
@@ -84,8 +89,13 @@ function injectAIConfig(projectRoot, markers) {
     if (!isDryRun) {
       if (!fs.existsSync(geminiDir)) fs.mkdirSync(geminiDir, { recursive: true });
       if (fs.existsSync(agentsFile)) {
-        fs.appendFileSync(agentsFile, '\n\n' + injection);
-        log.success('Injected rules into existing .gemini/agents.md');
+        const content = fs.readFileSync(agentsFile, 'utf-8');
+        if (!content.includes('The Unity Architect — AI Agent Rules')) {
+          fs.appendFileSync(agentsFile, '\n\n' + injection);
+          log.success('Injected rules into existing .gemini/agents.md');
+        } else {
+          log.info('.gemini/agents.md already has Architect rules. Skipping injection.');
+        }
       } else {
         fs.writeFileSync(agentsFile, injection);
         log.success('Created .gemini/agents.md');
@@ -100,8 +110,13 @@ function injectAIConfig(projectRoot, markers) {
     const claudeMd = path.join(projectRoot, 'CLAUDE.md');
     if (!isDryRun) {
       if (fs.existsSync(claudeMd)) {
-        fs.appendFileSync(claudeMd, '\n\n' + injection);
-        log.success('Injected rules into existing CLAUDE.md');
+        const content = fs.readFileSync(claudeMd, 'utf-8');
+        if (!content.includes('The Unity Architect — AI Agent Rules')) {
+          fs.appendFileSync(claudeMd, '\n\n' + injection);
+          log.success('Injected rules into existing CLAUDE.md');
+        } else {
+          log.info('CLAUDE.md already has Architect rules. Skipping injection.');
+        }
       } else {
         fs.writeFileSync(claudeMd, injection);
         log.success('Created CLAUDE.md');
@@ -130,7 +145,7 @@ function main() {
   console.log('\x1b[35m     ██║   ██╔══██║██╔══╝      ██║   ██║██║╚██╗██║██║   ██║     ╚██╔╝  \x1b[0m');
   console.log('\x1b[35m     ██║   ██║  ██║███████╗    ╚██████╔╝██║ ╚████║██║   ██║      ██║   \x1b[0m');
   console.log('\x1b[35m     ╚═╝   ╚═╝  ╚═╝╚══════╝     ╚═════╝ ╚═╝  ╚═══╝╚═╝   ╚═╝      ╚═╝   \x1b[0m');
-  console.log('\x1b[1m                      A R C H I T E C T  v1.0.0\x1b[0m');
+  console.log('\x1b[1m                      A R C H I T E C T  v1.0.1\x1b[0m');
   console.log('');
 
   if (isDryRun) log.warn('Running in DRY-RUN mode — no files will be modified.\n');

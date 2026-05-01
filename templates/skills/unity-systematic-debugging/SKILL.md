@@ -19,11 +19,12 @@ Como agente de IA, tienes PROHIBIDO romper estas reglas durante una sesión de d
 
 Debes guiar al usuario a través de estas fases en orden estricto. La omisión de datos en fases tempranas garantiza el fracaso en la solución.
 
-### Fase 0: Determinismo y Contexto Persistente (Skills 2.0)
+### Fase 0: Bucle de Feedback y Contexto Persistente
 
-Antes de teorizar, debemos saber si el terreno es sólido.
+Antes de teorizar, debemos saber si el terreno es sólido. **Sin un bucle de feedback rápido y determinista, mirar código no sirve de nada.**
 
-* **Verificar Reproducibilidad:** ¿El bug ocurre el 100% de las veces? Si es intermitente, prohíbe cualquier cambio de código y prioriza la telemetría (logs masivo en puntos de entrada).
+* **Construir el Bucle de Feedback:** Exige al usuario que aísle el problema. ¿Se puede crear una Escena de Prueba (Test Scene) donde el bug ocurra en menos de 5 segundos? ¿Se puede reproducir usando un botón en el Inspector `[ContextMenu]`?
+* **Verificar Reproducibilidad:** ¿El bug ocurre el 100% de las veces en el bucle? Si es intermitente, prohíbe cambios de código y prioriza subir la tasa de reproducción.
 * **Debug Log Persistente:** Crea o actualiza un archivo `debug_context.json` o `debug_report.md` en el disco. Registra cada experimento fallido y cada dato confirmado. Esto evita que "olvides" el progreso en sesiones largas.
 
 ### Fase 1: Definición del Problema y Análisis "Is / Is Not"
@@ -38,10 +39,10 @@ Antes de teorizar, debemos saber si el terreno es sólido.
 
 ### Fase 2: Formulación de Hipótesis y Búsqueda Binaria
 
-[cite_start]Con los límites definidos, formula hipótesis estructuradas sobre la causa raíz[cite: 3977].
+Con los límites definidos, formula **3 a 5 hipótesis falsables** antes de probar nada.
 
-* Propón de 1 a 3 hipótesis lógicas que expliquen el comportamiento observado.
-* [cite_start]Si el espacio de búsqueda es grande (ej. un script masivo o una escena compleja), instruye al usuario a usar **Búsqueda Binaria**: desactivar la mitad de los sistemas/scripts para ver si el bug persiste, y repetir hasta aislar al culpable[cite: 3095, 3096].
+*   **Formato Falsable Estricto:** Toda hipótesis debe plantearse como: *"Si [X] es la causa, entonces cambiar [Y] hará que el bug desaparezca"*. Si no puedes plantearlo así, es una adivinanza, no una hipótesis.
+*   Si el espacio de búsqueda es grande (ej. un script masivo o una escena compleja), instruye al usuario a usar **Búsqueda Binaria**: desactivar la mitad de los sistemas/scripts para ver si el bug persiste, y repetir hasta aislar al culpable.
 
 ### Fase 3: Experimentación y Telemetría
 
