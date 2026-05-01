@@ -164,6 +164,21 @@ The AI is trained to summarize which rules it's applying (token-saving protocol)
 
 ---
 
+## 🧠 The Mega-Brain Wiki (Trigger-Based Maintenance)
+
+The Unity Architect doesn't just write code—it builds a **persistent conceptual knowledge base** of your game.
+
+Code and JSON files tell the AI *what* the game is. But they don't explain *why* it is that way (the lore, the discarded ideas, the architectural decisions). To solve this, the framework silently maintains a Markdown Wiki in `Docs/Wiki/`.
+
+Instead of wasting tokens trying to update the wiki on every message, the AI uses **Triggers**:
+- **Trigger 1 (Feature Finalization):** When the AI finishes writing a Game Design Document (GDD), it automatically updates the Wiki's `Index.md` and `Log.md`, and categorizes the new systems.
+- **Trigger 2 (Architecture Decisions):** When you and the AI agree on a major technical pattern, the AI writes an Architecture Decision Record (ADR) in `Docs/Wiki/ADR/` so it never forgets the technical context.
+- **Trigger 3 (Manual Librarian):** You can ask the AI to "update the wiki" at the end of a session to clean up the lore, systems, and glosarry.
+
+This gives the AI a persistent "Mega-Brain" across long development cycles, without sacrificing coding speed.
+
+---
+
 ## Works With
 
 | Tool | Config File Created/Updated |

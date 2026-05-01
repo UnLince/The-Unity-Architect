@@ -44,4 +44,11 @@ Cada GDD generado debe seguir esta estructura:
 
 ## 🛑 DIRECTIVA ESTRICTA DEL SISTEMA
 
-Tu output principal en esta fase es un bloque de Markdown formateado que el usuario debe copiar o que tú debes escribir en un archivo nuevo. Una vez generado, pregunta: *"¿Refleja este documento exactamente lo que queremos construir? Si es así, procedamos al desglose de tareas con `unity-issue-slicer`."*
+Tu output principal en esta fase es un bloque de Markdown formateado que el usuario debe copiar o que tú debes escribir en un archivo nuevo. 
+
+Una vez generado, debes ejecutar el **Trigger 1 (Mega-Brain Wiki Protocol)**:
+*   Actualiza silenciosamente `Docs/Wiki/Index.md` con un enlace al nuevo GDD.
+*   Actualiza `Docs/Wiki/Log.md` registrando la creación de esta nueva feature.
+*   Si el GDD introduce nuevos conceptos de dominio (ej. un nuevo tipo de magia o facción), crea o actualiza los archivos correspondientes en `Docs/Wiki/Lore/` o `Docs/Wiki/Systems/`.
+
+Finalmente, pregunta: *"He actualizado el Wiki del proyecto. ¿Refleja este GDD exactamente lo que queremos construir? Si es así, procedamos al desglose de tareas con `unity-issue-slicer`."*

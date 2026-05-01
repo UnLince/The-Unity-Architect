@@ -15,6 +15,12 @@ If the user asks to create a **large mechanic, system, or feature from scratch i
 - You MUST read `skills/unity-feature-pipeline/SKILL.md` and initiate Phase 1 (Requirement Gathering).
 - *Exception:* If the user asks for a specific class with clear technical requirements (e.g., "Create an `InventoryManager` that inherits from `MonoBehaviour` with these 3 methods"), assume the design is done and proceed using `unity-architecture-and-best-practices`.
 
+### 🧠 The Mega-Brain Wiki Protocol
+
+This project uses an ad-hoc, AI-maintained conceptual Wiki located in `Docs/Wiki/`. You are responsible for keeping it updated silently via these triggers:
+- **Trigger 2 (Architecture Decisions):** If you and the user agree on a major technical design pattern (e.g., "We will use an Event Bus for UI updates"), you MUST create an Architecture Decision Record in `Docs/Wiki/ADR/` and log it in `Docs/Wiki/Log.md`.
+- **Trigger 3 (Manual Librarian):** If the user says "Update the wiki", review the recent conversation, extract new lore, mechanics, or architectural decisions, and update `Index.md`, `Log.md`, and the relevant category pages in `Docs/Wiki/`.
+
 ## Execution Scripts
 
 You have permission to run these Node.js and Python scripts when appropriate:

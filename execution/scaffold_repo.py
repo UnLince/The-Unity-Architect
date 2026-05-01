@@ -10,6 +10,10 @@ def create_folders():
     # Assets/_Project structure
     base_path = os.path.join('Assets', '_Project')
     project_folders = [
+        'Docs/Wiki',
+        'Docs/Wiki/ADR',
+        'Docs/Wiki/Lore',
+        'Docs/Wiki/Systems',
         'Scenes',
         'Scripts/Core',
         'Scripts/Gameplay',
