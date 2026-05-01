@@ -1,6 +1,6 @@
 /**
  * unity-doctor.js
- * Enforcer de guidelines VFX y UI Toolkit para Hex Protocol.
+ * Enforcer de guidelines de arquitectura, performance e infraestructura para The Unity Architect.
  * Genera un reporte detallado en "doctor-report.md".
  *
  * Uso: node execution/unity-doctor.js
@@ -12,7 +12,41 @@ const path = require('path');
 // ── Configuración ────────────────────────────────────────────
 const PROJECT_ROOT = path.resolve(__dirname, '..');
 const SCRIPTS_PATH = path.join(PROJECT_ROOT, 'Assets', '_Project', 'Scripts');
+const MANIFEST_PATH = path.join(PROJECT_ROOT, 'Packages', 'manifest.json');
 const REPORT_PATH = path.join(PROJECT_ROOT, 'doctor-report.md');
+
+// ── Checks de Infraestructura ────────────────────────────────
+function checkInfrastructure() {
+    const issues = [];
+    
+    // 1. Check Architect Kit
+    const toolFile = path.join(PROJECT_ROOT, 'Assets', 'Editor', 'TheUnityArchitect', 'ArchitectKitSceneInsight.cs');
+    if (!fs.existsSync(toolFile)) {
+        issues.push({
+            id: 'INFRA-001',
+            severity: 'ADVERTENCIA',
+            title: 'Falta Architect Kit (Scene Insight)',
+            detail: 'No se detectó el script de dumping de escena. Esta herramienta es vital para que la IA entienda tu jerarquía.',
+            fix: 'Copia `templates/Unity/Editor/TheUnityArchitect/ArchitectKitSceneInsight.cs` a tu carpeta de Editor.'
+        });
+    }
+
+    // 2. Check Newtonsoft JSON
+    if (fs.existsSync(MANIFEST_PATH)) {
+        const manifest = JSON.parse(fs.readFileSync(MANIFEST_PATH, 'utf8'));
+        if (!manifest.dependencies['com.unity.nuget.newtonsoft-json']) {
+            issues.push({
+                id: 'INFRA-002',
+                severity: 'CRÍTICO',
+                title: 'Falta dependencia Newtonsoft JSON',
+                detail: 'El Architect Kit requiere Newtonsoft para generar reportes JSON legibles.',
+                fix: 'Instala "com.unity.nuget.newtonsoft-json" vía Unity Package Manager.'
+            });
+        }
+    }
+
+    return issues;
+}
 
 // ── Reglas del Doctor ────────────────────────────────────────
 const DOCTOR_RULES = [
@@ -140,6 +174,8 @@ function runDoctor() {
         .filter(f => f.endsWith('.cs'))
         .map(f => ({ rel: f, full: path.join(SCRIPTS_PATH, f) }));
 
+    const infraIssues = checkInfrastructure();
+
     // Estructura: { ruleId → [{ file, line, methodName }] }
     const findings = {};
     DOCTOR_RULES.forEach(r => { findings[r.id] = []; });
@@ -179,7 +215,7 @@ function runDoctor() {
     const now = new Date().toLocaleString('es-AR', { timeZone: 'America/Argentina/Buenos_Aires' });
     const lines = [];
 
-    lines.push(`# 🏥 Doctor Report — Hex Protocol`);
+    lines.push(`# 🏥 Doctor Report — The Unity Architect`);
     lines.push(`\n> Generado el **${now}** por \`unity-doctor.js\`\n`);
     lines.push(`**Scope:** \`Assets/_Project/Scripts\``);
     lines.push(`**Archivos analizados:** ${allFiles.length}\n`);
@@ -207,9 +243,19 @@ function runDoctor() {
     categories.forEach(cat => {
         const rulesInCat = DOCTOR_RULES.filter(r => r.category === cat);
         const anyFindings = rulesInCat.some(r => findings[r.id].length > 0);
-        if (!anyFindings) return;
+        
+        if (!anyFindings && cat !== 'Infraestructura') return;
 
         lines.push(`\n---\n\n## 📦 ${cat}\n`);
+
+        if (cat === 'Infraestructura' && infraIssues.length > 0) {
+            infraIssues.forEach(issue => {
+                lines.push(`### ${severityEmoji(issue.severity)} \`${issue.id}\` — ${issue.title}\n`);
+                lines.push(`**Severidad:** ${issue.severity}  `);
+                lines.push(`**¿Qué pasa?** ${issue.detail}  `);
+                lines.push(`**Cómo arreglarlo:** ${issue.fix}\n`);
+            });
+        }
 
         rulesInCat.forEach(rule => {
             const hits = findings[rule.id];
@@ -247,7 +293,7 @@ function runDoctor() {
     fs.writeFileSync(REPORT_PATH, reportContent, 'utf8');
 
     // Console summary
-    console.log(`\n🏥 Doctor Report — Hex Protocol`);
+    console.log(`\n🏥 Doctor Report — The Unity Architect`);
     console.log(`${'─'.repeat(50)}`);
     DOCTOR_RULES.forEach(rule => {
         const hits = findings[rule.id];
