@@ -240,6 +240,18 @@ When you run the installer, it creates a local environment in your Unity project
 3.  **Architect Kit**: Automatically installs C# tools in `Assets/Editor/TheUnityArchitect` to allow the AI to "see" your scene hierarchy via JSON exports.
 4.  **AI Config Injection**: Injects a custom prompt into your `.cursorrules`, `.gemini/agents.md`, or `CLAUDE.md` to activate the Architect identity.
 
+---
+
+## Support the project
+
+If **The Unity Architect** helps you build better games faster, consider supporting its development:
+
+[**Sponsor on GitHub**](https://github.com/sponsors/UnLince)
+
+---
+
+## Contributing
+
 Contributions are welcome! If you have Unity skills, patterns, or scripts to add:
 
 1. Fork the repo
