@@ -108,6 +108,7 @@ npx the-unity-architect --force     # Skip Unity project detection, install anyw
 |-------|-------------|
 | `unity-systematic-debugging/` | Step-by-step scientific debugging protocol for Unity |
 | `unity-architecture-and-best-practices/` | Clean code, design patterns, and modular system architecture |
+| `unity-ui-toolkit/` | Unity 6 UI Toolkit best practices, GPU optimization, and Flexbox standards |
 
 Each skill folder contains a `SKILL.md` (the main AI directive) plus detailed reference modules:
 
@@ -128,6 +129,12 @@ Each skill folder contains a `SKILL.md` (the main AI directive) plus detailed re
 - `05-ui-and-presentation-architecture.md` — MVP/MVC for Unity UI
 - `06-combat-and-vfx-decoupling.md` — Data-driven combat, pooling VFX
 - `07-performance-coding-patterns.md` — Burst, DOTS, Job System, object pooling
+
+### `Unity/Editor/` — Architect Kit (C# Tools)
+
+Herramientas nativas para el editor de Unity que facilitan la interacción con la IA.
+
+- `ArchitectKitSceneInsight.cs` — Exporta la jerarquía de la escena activa a JSON para análisis profundo de la IA.
 
 ### `execution/` — Diagnostic Scripts
 
@@ -197,7 +204,12 @@ The-Unity-Architect/
 │   │   └── injection.md      # AI rules injected into your config files
 │   ├── skills/
 │   │   ├── unity-systematic-debugging/
-│   │   └── unity-architecture-and-best-practices/
+│   │   ├── unity-architecture-and-best-practices/
+│   │   └── unity-ui-toolkit/
+│   ├── Unity/
+│   │   └── Editor/
+│   │       └── TheUnityArchitect/
+│   │           └── ArchitectKitSceneInsight.cs
 │   └── execution/
 │       ├── unity-doctor.js
 │       ├── unity-audit.js
