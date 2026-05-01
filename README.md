@@ -190,6 +190,9 @@ This gives the AI a persistent "Mega-Brain" across long development cycles, with
 
 If none are detected, defaults to creating `.cursorrules`.
 
+> [!TIP]
+> **Upgrading?** The installer now detects previous versions and offers an **interactive clean-up** to ensure your project stays tidy.
+
 ```text
                       A R C H I T E C T  v1.2.1
 ```
