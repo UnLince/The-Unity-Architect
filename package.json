@@ -1,6 +1,6 @@
 {
   "name": "the-unity-architect",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "description": "An expert Unity AI agent framework: skills, best practices, and utility scripts for AI-assisted Unity development with tools like Antigravity, Cursor, and Unity MCP.",
   "bin": {
     "unity-architect": "bin/install.js"

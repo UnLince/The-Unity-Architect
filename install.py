@@ -1,174 +1,118 @@
-#!/usr/bin/env python3
-"""
-The Unity Architect - Python Alternative Installer
-For developers who don't have Node.js installed.
-
-Usage:
-  python install.py
-  python install.py --dry-run
-  python install.py --force
-"""
-
 import os
-import sys
 import shutil
-import urllib.request
-import json
-import argparse
-import tempfile
-import zipfile
+import sys
+from datetime import datetime
 
-REPO_URL = "https://github.com/UnLince/The-Unity-Architect"
-ZIP_URL  = "https://github.com/UnLince/The-Unity-Architect/archive/refs/heads/main.zip"
+# Configuration
+VERSION = "1.2.2"
+FRAMEWORK_DIR = "The-Unity-Architect"
 
-DRY_RUN = "--dry-run" in sys.argv
-FORCE   = "--force"   in sys.argv
-
-# ── Terminal colors ────────────────────────────────────────────────────────────
 class C:
-    RESET   = "\033[0m"
-    BOLD    = "\033[1m"
-    PURPLE  = "\033[35m"
-    GREEN   = "\033[32m"
-    YELLOW  = "\033[33m"
-    RED     = "\033[31m"
-    CYAN    = "\033[36m"
+    PURPLE = '\033[95m'
+    BLUE = '\033[94m'
+    CYAN = '\033[96m'
+    GREEN = '\033[92m'
+    YELLOW = '\033[93m'
+    RED = '\033[91m'
+    RESET = '\033[0m'
+    BOLD = '\033[1m'
 
-def log_info(msg):    print(f"  {C.CYAN}ℹ{C.RESET}  {msg}")
-def log_ok(msg):      print(f"  {C.GREEN}✔{C.RESET}  {msg}")
-def log_warn(msg):    print(f"  {C.YELLOW}⚠{C.RESET}  {msg}")
-def log_error(msg):   print(f"  {C.RED}✖{C.RESET}  {msg}")
-def log_step(msg):    print(f"\n{C.BOLD}{C.PURPLE}▶ {msg}{C.RESET}")
+def log_step(msg): print(f"\n{C.BOLD}{C.PURPLE}▶ {msg}{C.RESET}")
+def log_ok(msg): print(f"  {C.GREEN}✔{C.RESET}  {msg}")
+def log_info(msg): print(f"  {C.CYAN}ℹ{C.RESET}  {msg}")
+def log_warn(msg): print(f"  {C.YELLOW}⚠{C.RESET}  {msg}")
+def log_err(msg): print(f"  {C.RED}✖{C.RESET}  {msg}")
 
-# ── Core ───────────────────────────────────────────────────────────────────────
 def copy_folder(src, dst):
-    if not DRY_RUN:
-        os.makedirs(dst, exist_ok=True)
+    if not os.path.exists(dst):
+        os.makedirs(dst)
     for item in os.listdir(src):
         s = os.path.join(src, item)
         d = os.path.join(dst, item)
         if os.path.isdir(s):
             copy_folder(s, d)
         else:
-            if not DRY_RUN:
-                shutil.copy2(s, d)
-            log_info(f"Copied: {os.path.relpath(d, os.getcwd())}")
+            shutil.copy2(s, d)
+            log_info(f"Copied: {item}")
 
 def inject_config(project_root, injection_text):
-    targets = []
-    if os.path.exists(os.path.join(project_root, ".cursorrules")):
-        targets.append((".cursorrules", "append"))
-    if os.path.exists(os.path.join(project_root, ".cursor")):
-        targets.append((".cursorrules", "append"))
-    if os.path.exists(os.path.join(project_root, ".gemini")):
-        targets.append((os.path.join(".gemini", "agents.md"), "append"))
-    if os.path.exists(os.path.join(project_root, "CLAUDE.md")):
-        targets.append(("CLAUDE.md", "append"))
-    if os.path.exists(os.path.join(project_root, ".windsurfrules")):
-        targets.append((".windsurfrules", "append"))
-
-    if not targets or FORCE:
-        targets = [(".cursorrules", "create")]
-
-    for (rel_path, mode) in targets:
-        full_path = os.path.join(project_root, rel_path)
-        if DRY_RUN:
-            log_info(f"[dry-run] Would write to {rel_path}")
-            continue
-        os.makedirs(os.path.dirname(full_path), exist_ok=True)
-        if mode == "append" and os.path.exists(full_path):
-            with open(full_path, "a", encoding="utf-8") as f:
-                f.write("\n\n" + injection_text)
-            log_ok(f"Injected rules into {rel_path}")
-        else:
-            with open(full_path, "w", encoding="utf-8") as f:
-                f.write(injection_text)
-            log_ok(f"Created {rel_path}")
+    targets = ["agents.md", ".cursorrules", "CLAUDE.md", ".windsurfrules"]
+    for target in targets:
+        target_path = os.path.join(project_root, target)
+        # Always create agents.md, others only if exist or forced
+        if target == "agents.md" or os.path.exists(target_path):
+            if os.path.exists(target_path):
+                with open(target_path, "r", encoding="utf-8") as f:
+                    content = f.read()
+                if "The Unity Architect — AI Agent Rules" not in content:
+                    with open(target_path, "a", encoding="utf-8") as f:
+                        f.write("\n\n" + injection_text)
+                    log_ok(f"Injected rules into {target}")
+                else:
+                    log_info(f"{target} already configured.")
+            else:
+                with os.open(target_path, os.O_CREAT | os.O_WRONLY, 0o644) as fd:
+                    os.write(fd, injection_text.encode('utf-8'))
+                log_ok(f"Created and configured {target}")
 
 def main():
-    try:
-        project_root = os.getcwd()
+    project_root = os.getcwd()
+    repo_dir = os.path.dirname(os.path.abspath(__file__))
+    templates = os.path.join(repo_dir, "templates")
+    framework_root = os.path.join(project_root, FRAMEWORK_DIR)
+    
+    print(f"\n{C.BOLD}{C.PURPLE}The Unity Architect {C.RESET}v{VERSION}")
+    
+    # Unity Check
+    has_unity = os.path.exists(os.path.join(project_root, "Assets"))
+    if not has_unity:
+        log_warn("Not a standard Unity project root. Proceeding anyway...")
 
-        print(f"\n{C.BOLD}{C.PURPLE}  The Unity Architect — Python Installer v1.2.1{C.RESET}\n")
+    # Migration
+    legacy = [os.path.join(project_root, d) for d in ["skills", "execution", "Wiki"] if os.path.exists(os.path.join(project_root, d))]
+    if legacy:
+        log_warn("Legacy folders detected.")
+        choice = input("  ? Deseas migrar a la estructura unificada? [Y/n] ").lower()
+        if choice != 'n':
+            if not os.path.exists(framework_root): os.makedirs(framework_root)
+            for d in legacy:
+                name = os.path.basename(d)
+                target = os.path.join(framework_root, name)
+                if os.path.exists(target): shutil.rmtree(target)
+                os.rename(d, target)
+                log_ok(f"Migrated: {name}")
 
-        if DRY_RUN:
-            log_warn("DRY-RUN mode — no files will be modified.\n")
+    if not os.path.exists(framework_root): os.makedirs(framework_root)
 
-        # Safety check
-        has_unity = os.path.exists(os.path.join(project_root, "Assets")) \
-                 or os.path.exists(os.path.join(project_root, "ProjectSettings"))
-        if not has_unity and not FORCE:
-            log_error("This does not look like a Unity project (no Assets/ or ProjectSettings/).")
-            log_warn("Use --force to skip this check.")
-            sys.exit(1)
+    # Step 1: Skills
+    log_step("Step 1/4 — AI Skills")
+    copy_folder(os.path.join(templates, "skills"), os.path.join(framework_root, "skills"))
 
-        # Download the repo zip
-        log_step("Downloading The Unity Architect...")
-        with tempfile.TemporaryDirectory() as tmpdir:
-            zip_path = os.path.join(tmpdir, "repo.zip")
-            log_info(f"Fetching {ZIP_URL}")
-            urllib.request.urlretrieve(ZIP_URL, zip_path)
-            log_ok("Download complete.")
+    # Step 2: Scripts
+    log_step("Step 2/4 — Scripts")
+    copy_folder(os.path.join(templates, "execution"), os.path.join(framework_root, "execution"))
 
-            with zipfile.ZipFile(zip_path, 'r') as z:
-                z.extractall(tmpdir)
+    # Step 3: Wiki
+    log_step("Step 3/4 — Wiki")
+    wiki_path = os.path.join(framework_root, "Wiki")
+    for sub in ["ADR", "Systems", "Features", "Lore"]:
+        os.makedirs(os.path.join(wiki_path, sub), exist_ok=True)
+    
+    index_path = os.path.join(wiki_path, "Index.md")
+    if not os.path.exists(index_path):
+        with open(index_path, "w") as f:
+            f.write("# Mega-Brain Wiki Index\n\n## Categories\n- [ADR](./ADR/)\n- [Systems](./Systems/)\n- [Features](./Features/)\n")
+    
+    log_ok("Wiki structure ready.")
 
-            # The extracted folder is named 'The-Unity-Architect-main'
-            repo_dir   = os.path.join(tmpdir, "The-Unity-Architect-main")
-            templates  = os.path.join(repo_dir, "templates")
-            ai_config  = os.path.join(templates, "ai-config", "injection.md")
+    # Step 4: AI Config
+    log_step("Step 4/4 — Configuring AI")
+    ai_config_file = os.path.join(templates, "ai-config", "injection.md")
+    with open(ai_config_file, "r", encoding="utf-8") as f:
+        injection = f.read()
+    inject_config(project_root, injection)
 
-            # Step 0: Clean up old installation
-            has_existing = os.path.exists(os.path.join(project_root, "skills")) or \
-                           os.path.exists(os.path.join(project_root, "execution"))
-            
-            if has_existing and not FORCE:
-                print(f"\n  {C.YELLOW}?{C.RESET}  He detectado una instalación previa. ¿Quieres realizar una instalación limpia (borrar archivos antiguos)? [y/N] ", end="")
-                choice = input().lower()
-                if choice == 'y':
-                    log_info("Realizando limpieza...")
-                    if not DRY_RUN:
-                        if os.path.exists(os.path.join(project_root, "skills")): shutil.rmtree(os.path.join(project_root, "skills"))
-                        if os.path.exists(os.path.join(project_root, "execution")): shutil.rmtree(os.path.join(project_root, "execution"))
-                    log_ok("Carpetas antiguas eliminadas.")
-                else:
-                    log_info("Continuando con la instalación (los archivos nuevos sobrescribirán a los antiguos).")
-
-            # Step 1: Skills
-            log_step("Step 1/3 — Installing AI Skills")
-            copy_folder(os.path.join(templates, "skills"), os.path.join(project_root, "skills"))
-            log_ok("Skills installed → skills/")
-
-            # Step 1.5: Architect Kit
-            unity_src = os.path.join(templates, "Unity", "Editor")
-            if os.path.exists(os.path.join(templates, "Unity")):
-                unity_dst = os.path.join(project_root, "Assets", "Editor") if has_unity else os.path.join(project_root, "Unity", "Editor")
-                copy_folder(unity_src, unity_dst)
-                log_ok(f"Architect Kit tools installed → {os.path.relpath(unity_dst, os.getcwd())}/")
-
-            # Step 2: Execution scripts
-            log_step("Step 2/3 — Installing Execution Scripts")
-            copy_folder(os.path.join(templates, "execution"), os.path.join(project_root, "execution"))
-            log_ok("Scripts installed → execution/")
-
-            # Step 3: AI config injection
-            log_step("Step 3/3 — Configuring AI Agent")
-            with open(ai_config, "r", encoding="utf-8") as f:
-                injection_text = f.read()
-            inject_config(project_root, injection_text)
-
-        print(f"\n{C.BOLD}{C.GREEN}  ✔ The Unity Architect is ready. Your AI is now a Unity expert.{C.RESET}\n")
-        print(f"  {C.BOLD}Next steps:{C.RESET}")
-        print("  1. Open your project in Cursor / Antigravity / Claude")
-        print("  2. The AI will automatically read skills/ for guidance")
-        print("  3. Run: node execution/unity-doctor.js  (or python execution/parse_editor_log.py)")
-        print()
-    except Exception as e:
-        print()
-        log_error("Installation failed due to a system error:")
-        print(f"  {str(e)}")
-        log_info("Please check your permissions or network connection.")
-        sys.exit(1)
+    print(f"\n{C.BOLD}{C.GREEN}  ✔ Success! Centralized in {FRAMEWORK_DIR}/{C.RESET}\n")
 
 if __name__ == "__main__":
     main()
