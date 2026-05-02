@@ -194,58 +194,45 @@ If none are detected, defaults to creating `.cursorrules`.
 > **Upgrading?** The installer now detects previous versions and offers an **interactive clean-up** to ensure your project stays tidy.
 
 ```text
-                      A R C H I T E C T  v1.2.1
+                      A R C H I T E C T  v1.2.2
 ```
+
+## 🛠️ The Architect Toolkit (v1.2.2)
+
+Everything is now centralized under the `The-Unity-Architect/` directory to keep your project clean:
+
+- **`The-Unity-Architect/skills/`**: Domain-specific guidance for your AI (Architecture, Debugging, Pipeline).
+- **`The-Unity-Architect/execution/`**: Powerful Node/Python scripts for auditing and debugging.
+- **`The-Unity-Architect/Wiki/`**: The "Mega-Brain" conceptual source of truth (ADRs, Lore, Systems).
+- **`agents.md`**: (Project Root) The soul of your AI, created automatically in the root of your project.
 
 ---
 
-## Alternative Install (No Node.js required)
+## 🧠 The Mega-Brain Wiki Protocol
 
-For developers who only have Python:
+This framework implements an **Autonomous Wiki** that your AI maintains. It uses three triggers to ensure no conceptual context is lost:
 
-```bash
-curl -sSL https://raw.githubusercontent.com/UnLince/The-Unity-Architect/main/install.py | python3 -
-```
-
-Or on Windows PowerShell:
-
-```powershell
-iwr https://raw.githubusercontent.com/UnLince/The-Unity-Architect/main/install.py | python -
-```
+1. **Trigger 1 (GDD Approval):** When a feature design is finalized, the AI summarizes it in `Wiki/Systems/`.
+2. **Trigger 2 (Architecture Decisions):** Major technical choices are recorded as **ADRs** (Architecture Decision Records) in `Wiki/ADR/`.
+3. **Trigger 3 (Manual Librarian):** Say **"Update the wiki"** anytime to have the AI consolidate recent lore or mechanics.
 
 ---
 
-## Project Structure
+## 🎨 Professional Standards (Unity 6)
 
-```
-The-Unity-Architect/
-├── bin/
-│   └── install.js            # CLI installer script (Source of truth for npx)
-├── install.py                # Python alternative installer
-├── templates/
-│   ├── ai-config/            # AI rules injected into your project
-│   ├── skills/               # The "Brains" of the architect
-│   ├── execution/            # Diagnostic and automation scripts
-│   │   ├── unity-doctor.js   # Health check
-│   │   ├── unity-audit.js    # Deep system analysis
-│   │   ├── scaffold_repo.py  # New project setup
-│   │   └── ...
-│   └── Unity/
-│       └── Editor/           # C# Editor Tools (Architect Kit)
-```
+The Unity Architect is optimized for **Unity 6** and modern development:
 
-## How it works
-
-When you run the installer, it creates a local environment in your Unity project:
-
-1.  **`skills/`**: A folder containing markdown instructions that your AI agent (Cursor, Claude, etc.) reads to understand Unity best practices.
-2.  **`execution/`**: A suite of JS/Python scripts you can run to audit your code, find missing scripts, or visualize your project graph.
-3.  **Architect Kit**: Automatically installs C# tools in `Assets/Editor/TheUnityArchitect` to allow the AI to "see" your scene hierarchy via JSON exports.
-4.  **AI Config Injection**: Injects a custom prompt into your `.cursorrules`, `.gemini/agents.md`, or `CLAUDE.md` to activate the Architect identity.
+- **UI Toolkit First:** Rigid standards for high-performance USS and UXML.
+- **GAS-Lite Architecture:** Modular systems that don't depend on Monolithic managers.
+- **Scientific Debugging:** A protocol to stop "guess-fixing" and start diagnosing.
 
 ---
 
-## Support the project
+## 🤝 Sponsorship & Support
+
+If this framework helps you build better games, consider supporting the project!
+
+- **GitHub Sponsors:** [Support the Lince](https://github.com/sponsors/UnLince) 🐾
 
 If **The Unity Architect** helps you build better games faster, consider supporting its development:
 
