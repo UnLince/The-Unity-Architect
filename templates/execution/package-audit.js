@@ -4,57 +4,57 @@ const path = require('path');
 const rules = [
     {
         id: "SAFETY_SYSTEM_IO",
-        name: "Acceso a Sistema de Archivos",
+        name: "File System Access",
         regex: /System\.IO/g,
-        severity: "CRÍTICO",
-        message: "Uso de System.IO detectado. Verifica si es necesario (ej. caché) o malicioso."
+        severity: "CRITICAL",
+        message: "System.IO usage detected. Verify if it is necessary (e.g., caching) or malicious."
     },
     {
         id: "SAFETY_SYSTEM_NET",
-        name: "Acceso a Red",
+        name: "Network Access",
         regex: /System\.Net/g,
-        severity: "CRÍTICO",
-        message: "Uso de System.Net detectado. Posible comunicación externa no autorizada."
+        severity: "CRITICAL",
+        message: "System.Net usage detected. Potential unauthorized external communication."
     },
     {
         id: "SAFETY_OPEN_URL",
-        name: "Apertura de URLs",
+        name: "URL Opening",
         regex: /Application\.OpenURL/g,
-        severity: "ADVERTENCIA",
-        message: "Abre URLs externas. Verifica el destino."
+        severity: "WARNING",
+        message: "Opens external URLs. Verify the destination."
     },
     {
         id: "COMPAT_BUILTIN_SHADER",
-        name: "Shader de Pipeline Integrado (Legacy)",
+        name: "Built-in Pipeline Shader (Legacy)",
         regex: /CGPROGRAM|UnityCG\.cginc/g,
         extension: '.shader',
-        severity: "ADVERTENCIA",
-        message: "Shader tipo Built-in detectado. En URP se verá ROSADO. Requiere conversión."
+        severity: "WARNING",
+        message: "Built-in type shader detected. In URP it will look PINK. Requires conversion."
     },
     {
         id: "COMPAT_URP_SHADER",
-        name: "Shader de URP",
+        name: "URP Shader",
         regex: /HLSLPROGRAM|Packages\/com\.unity\.render-pipelines\.universal/g,
         extension: '.shader',
         severity: "INFO",
-        message: "Shader compatible con URP detectado."
+        message: "URP-compatible shader detected."
     },
     {
         id: "PERF_GETCOMPONENT_UPDATE",
-        name: "GetComponent en Update",
+        name: "GetComponent in Update",
         regex: /void\s+(Update|FixedUpdate|LateUpdate)\s*\(.*\)[\s\S]*?GetComponent/g,
-        severity: "ADVERTENCIA",
-        message: "GetComponent en métodos de Update. Impacto en rendimiento, mejor cachear en Awake/Start."
+        severity: "WARNING",
+        message: "GetComponent in Update methods. Performance impact, better to cache in Awake/Start."
     }
 ];
 
 function audit(dir) {
     if (!fs.existsSync(dir)) {
-        console.error(`Error: Directorio no encontrado: ${dir}`);
+        console.error(`Error: Directory not found: ${dir}`);
         process.exit(1);
     }
 
-    console.log(`\n🛡️  Iniciando Auditoría de Seguridad y Compatibilidad en: ${dir}\n`);
+    console.log(`\n🛡️  Starting Security and Compatibility Audit in: ${dir}\n`);
     let findings = 0;
 
     const walk = (currentDir) => {
@@ -89,7 +89,7 @@ function audit(dir) {
     };
 
     walk(dir);
-    console.log(`\n✅ Auditoría finalizada. Hallazgos totales: ${findings}\n`);
+    console.log(`\n✅ Audit finished. Total findings: ${findings}\n`);
 }
 
 const target = process.argv[2] || './Assets/Hovl Studio';

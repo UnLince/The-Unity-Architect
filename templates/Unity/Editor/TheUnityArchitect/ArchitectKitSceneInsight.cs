@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
-// Intentamos usar Newtonsoft si existe, si no, lanzamos error descriptivo
+// Attempt to use Newtonsoft if installed, otherwise show a descriptive error
 #if UNITY_NEWTONSOFT_JSON_INSTALLED
 using Newtonsoft.Json;
 #endif
@@ -13,7 +13,7 @@ namespace UnityArchitect.Editor.Tools
 {
     /// <summary>
     /// Architect Kit: Scene Insight
-    /// Genera un volcado completo de la jerarquía de la escena para análisis por IA o depuración técnica.
+    /// Generates a full scene hierarchy dump for AI analysis or technical debugging.
     /// </summary>
     public class ArchitectKitSceneInsight : EditorWindow
     {
@@ -26,7 +26,7 @@ namespace UnityArchitect.Editor.Tools
             if (!CheckForNewtonsoft())
             {
                 EditorUtility.DisplayDialog("Architect Kit Error", 
-                    "Este componente requiere 'Newtonsoft JSON'. \n\nPor favor, instálalo vía Package Manager: \n'com.unity.nuget.newtonsoft-json'", "Entendido");
+                    "This component requires 'Newtonsoft JSON'. \n\nPlease install it via the Package Manager: \n'com.unity.nuget.newtonsoft-json'", "Understood");
                 return;
             }
 #endif
@@ -34,7 +34,7 @@ namespace UnityArchitect.Editor.Tools
             var sceneObjects = new List<GameObjectData>();
             var allObjects = Object.FindObjectsByType<GameObject>(FindObjectsInactive.Include, FindObjectsSortMode.None);
 
-            // Filtrar solo objetos raíz para iniciar recursión
+            // Filter only root objects to start recursion
             foreach (var go in allObjects)
             {
                 if (go.transform.parent == null)
@@ -49,7 +49,7 @@ namespace UnityArchitect.Editor.Tools
             
             File.WriteAllText(path, json);
             
-            Debug.Log($"<b><color=#4CAF50>[Architect Kit]</color></b> Escena exportada exitosamente a: <color=white>{path}</color>");
+            Debug.Log($"<b><color=#4CAF50>[Architect Kit]</color></b> Scene exported successfully to: <color=white>{path}</color>");
             EditorUtility.RevealInFinder(path);
         }
 
@@ -87,15 +87,15 @@ namespace UnityArchitect.Editor.Tools
 #if UNITY_NEWTONSOFT_JSON_INSTALLED
             return JsonConvert.SerializeObject(obj, Formatting.Indented);
 #else
-            // Fallback muy básico si no hay Newtonsoft (idealmente el usuario debería instalarlo)
+            // Basic fallback if Newtonsoft is missing (user should ideally install it)
             return JsonUtility.ToJson(obj, true); 
 #endif
         }
 
         private static bool CheckForNewtonsoft()
         {
-            // Verificación simple de si el namespace existe (esto es solo un placeholder, 
-            // la lógica real de compilación depende del .asmdef o símbolo de compilación)
+            // Simple check if the namespace exists (placeholder, 
+            // actual compilation logic depends on .asmdef or compiler symbols)
             return false; 
         }
 

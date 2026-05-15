@@ -42,7 +42,7 @@ This framework provides the *intelligence*, but MCP provides the *eyes and hands
 - **God Mode (Natural Language Creation):** Ask the IA to "Create a Player object in the scene with a click-to-move system using MOBA-like best practices for snappy game feel" and watch it build the objects, scripts, and components for you.
 
 > [!TIP]
-> **Roadmap:** High-fidelity skills for **UI Toolkit** and **AI Texture Generation** are coming in v1.2.0.
+> **New in v1.3.1:** Full English alignment across all scripts, diagnostics, and UI strings.
 
 ---
 
@@ -194,10 +194,10 @@ If none are detected, defaults to creating `.cursorrules`.
 > **Upgrading?** The installer now detects previous versions and offers an **interactive clean-up** to ensure your project stays tidy.
 
 ```text
-                      A R C H I T E C T  v1.2.2
+                      A R C H I T E C T  v1.3.1
 ```
 
-## 🛠️ The Architect Toolkit (v1.2.2)
+## 🛠️ The Architect Toolkit (v1.3.1)
 
 Everything is now centralized under the `The-Unity-Architect/` directory to keep your project clean:
 

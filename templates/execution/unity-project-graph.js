@@ -1,13 +1,13 @@
 /**
  * unity-project-graph.js
- * Analiza el proyecto Unity sin abrir el Editor.
- * Construye un grafo de dependencias entre escenas, prefabs, scripts y assets.
+ * Analyzes the Unity project without opening the Editor.
+ * Builds a dependency graph between scenes, prefabs, scripts, and assets.
  *
- * Salida: project-graph.json  +  project-graph-report.md
- * Uso:    node execution/unity-project-graph.js
- * Flags:  --missing   Solo mostrar GUIDs rotos
- *         --json      Solo exportar JSON (sin md)
- *         --scene     También analizar .unity scenes
+ * Output: project-graph.json  +  project-graph-report.md
+ * Usage:  node execution/unity-project-graph.js
+ * Flags:  --missing   Only show broken GUIDs
+ *         --json      Only export JSON (no markdown)
+ *         --scene     Also analyze .unity scenes
  */
 
 'use strict';
@@ -145,54 +145,54 @@ function buildGraph(guidMap) {
 // ── Step 4: Generate Markdown report ─────────────────────────────────────────
 function generateReport(graph) {
     const { nodes, scriptIndex } = graph;
-    const now = new Date().toLocaleString('es-AR', { timeZone: 'America/Argentina/Buenos_Aires' });
+    const now = new Date().toLocaleString();
     const lines = [];
 
     lines.push('# 🗂️ Unity Project Graph Report');
-    lines.push(`\n> Generado el **${now}** por \`unity-project-graph.js\`\n`);
+    lines.push(`\n> Generated on **${now}** by \`unity-project-graph.js\`\n`);
 
     // Summary
     const allMissing = nodes.flatMap(n => n.missingScripts.map(r => ({ ...r, file: n.file })));
-    lines.push('## 📊 Resumen\n');
-    lines.push(`| Tipo | Cantidad |`);
+    lines.push('## 📊 Summary\n');
+    lines.push(`| Type | Count |`);
     lines.push(`|:-----|:---------|`);
-    lines.push(`| Prefabs analizados | ${nodes.filter(n => n.type === 'prefab').length} |`);
-    lines.push(`| Assets analizados | ${nodes.filter(n => n.type === 'asset').length} |`);
-    lines.push(`| Escenas analizadas | ${nodes.filter(n => n.type === 'scene').length} |`);
-    lines.push(`| Scripts en proyecto | ${scriptIndex.length} |`);
-    lines.push(`| 🔴 Scripts rotos (missing) | **${allMissing.length}** |`);
+    lines.push(`| Prefabs analyzed | ${nodes.filter(n => n.type === 'prefab').length} |`);
+    lines.push(`| Assets analyzed | ${nodes.filter(n => n.type === 'asset').length} |`);
+    lines.push(`| Scenes analyzed | ${nodes.filter(n => n.type === 'scene').length} |`);
+    lines.push(`| Project scripts | ${scriptIndex.length} |`);
+    lines.push(`| 🔴 Broken scripts (missing) | **${allMissing.length}** |`);
     lines.push('');
 
     // Missing scripts (top priority)
     if (allMissing.length > 0) {
-        lines.push('## 🔴 Scripts Rotos (Missing References)\n');
-        lines.push('> Estos archivos referencian scripts que ya no existen. Usar `GameObjectUtility.RemoveMonoBehavioursWithMissingScript` para limpiarlos.\n');
-        lines.push('| Archivo | GUID Roto |');
+        lines.push('## 🔴 Broken Scripts (Missing References)\n');
+        lines.push('> These files reference scripts that no longer exist. Use `GameObjectUtility.RemoveMonoBehavioursWithMissingScript` to clean them.\n');
+        lines.push('| File | Broken GUID |');
         lines.push('|:--------|:----------|');
         for (const m of allMissing) {
             lines.push(`| \`${path.basename(m.file)}\` | \`${m.guid}\` |`);
         }
         lines.push('');
     } else {
-        lines.push('## ✅ No hay scripts rotos\n');
+        lines.push('## ✅ No broken scripts found\n');
     }
 
     if (!ONLY_MISSING) {
         // Per-file dependency tree
         lines.push('---\n');
-        lines.push('## 📦 Árbol de Dependencias por Archivo\n');
+        lines.push('## 📦 Dependency Tree by File\n');
 
         for (const node of nodes) {
             lines.push(`### \`${node.name}\``);
             lines.push(`**Path:** \`${node.file}\`  `);
-            lines.push(`**Tipo:** ${node.type}  `);
+            lines.push(`**Type:** ${node.type}  `);
 
             if (node.gameObjects.length > 0) {
                 lines.push(`**GameObjects:** ${node.gameObjects.slice(0, 10).map(g => `\`${g}\``).join(', ')}${node.gameObjects.length > 10 ? ' ...' : ''}`);
             }
 
             if (node.scriptRefs.length > 0) {
-                lines.push('\n**Scripts referenciados:**');
+                lines.push('\n**Referenced Scripts:**');
                 for (const ref of node.scriptRefs) {
                     if (ref.missing) {
                         lines.push(`  - 🔴 MISSING \`${ref.guid}\``);
@@ -207,7 +207,7 @@ function generateReport(graph) {
 
         // Script index
         lines.push('---\n');
-        lines.push('## 📝 Índice de Scripts\n');
+        lines.push('## 📝 Script Index\n');
         lines.push('| Script | GUID | Path |');
         lines.push('|:-------|:-----|:-----|');
         for (const s of scriptIndex.sort((a, b) => a.name.localeCompare(b.name))) {
@@ -215,7 +215,7 @@ function generateReport(graph) {
         }
     }
 
-    lines.push('\n---\n_Generado por `execution/unity-project-graph.js`. Para regenerar: `node execution/unity-project-graph.js`_');
+    lines.push('\n---\n_Generated by `execution/unity-project-graph.js`. To regenerate: `node execution/unity-project-graph.js`_');
     return lines.join('\n');
 }
 
@@ -241,15 +241,15 @@ function walkFiles(dir, filter) {
 
 // ── Main ──────────────────────────────────────────────────────────────────────
 console.log('🗂️  Unity Project Graph\n' + '─'.repeat(50));
-console.log(`📂 Scope: ${PROJECT_ONLY ? 'Assets/_Project only (--project-only)' : 'Assets/ completo'}`);
-console.log('📂 Leyendo GUIDs del proyecto (Assets + Packages)...');
+console.log(`📂 Scope: ${PROJECT_ONLY ? 'Assets/_Project only (--project-only)' : 'Full Assets/ complete'}`);
+console.log('📂 Reading project GUIDs (Assets + Packages)...');
 
 const guidMap = buildGuidMap();
-console.log(`   ${Object.keys(guidMap).length} assets indexados`);
+console.log(`   ${Object.keys(guidMap).length} assets indexed`);
 
-console.log('🔍 Analizando prefabs y assets...');
+console.log('🔍 Analyzing prefabs and assets...');
 const graph = buildGraph(guidMap);
-console.log(`   ${graph.nodes.length} archivos analizados`);
+console.log(`   ${graph.nodes.length} files analyzed`);
 
 // Write JSON
 const jsonOut = {
@@ -263,25 +263,25 @@ const jsonOut = {
     scripts: graph.scriptIndex,
 };
 fs.writeFileSync(OUT_JSON, JSON.stringify(jsonOut, null, 2), 'utf8');
-console.log(`✅ JSON exportado: project-graph.json`);
+console.log(`✅ JSON exported: project-graph.json`);
 
 if (!NO_MD) {
     const md = generateReport(graph);
     fs.writeFileSync(OUT_MD, md, 'utf8');
-    console.log(`✅ Reporte exportado: project-graph-report.md`);
+    console.log(`✅ Report exported: project-graph-report.md`);
 }
 
 // Console summary of missing
 const missing = graph.nodes.filter(n => n.missingScripts.length > 0);
 if (missing.length > 0) {
-    console.log(`\n🔴 Scripts rotos encontrados en ${missing.length} archivo(s):`);
+    console.log(`\n🔴 Broken scripts found in ${missing.length} file(s):`);
     for (const node of missing) {
         console.log(`   • ${node.name}`);
         for (const r of node.missingScripts) {
-            console.log(`     GUID roto: ${r.guid}`);
+            console.log(`     Broken GUID: ${r.guid}`);
         }
     }
 } else {
-    console.log('\n✅ No se encontraron scripts rotos');
+    console.log('\n✅ No broken scripts found');
 }
 console.log('');

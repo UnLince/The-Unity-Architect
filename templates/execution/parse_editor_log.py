@@ -4,7 +4,7 @@ import platform
 import re
 
 def get_default_log_path():
-    """Obtiene la ruta por defecto del Editor.log según el sistema operativo."""
+    """Gets the default Editor.log path based on the operating system."""
     system = platform.system()
     if system == "Windows":
         return os.path.expandvars(r"%LOCALAPPDATA%\Unity\Editor\Editor.log")
@@ -16,12 +16,12 @@ def get_default_log_path():
         return None
 
 def parse_log(file_path, output_limit=50):
-    """Extrae errores y excepciones del log."""
+    """Extracts errors and exceptions from the log."""
     if not os.path.exists(file_path):
-        print(f"Error: No se encontró el archivo log en: {file_path}")
+        print(f"Error: Log file not found at: {file_path}")
         return
 
-    print(f"--- Analizando Unity Editor Log: {file_path} ---\n")
+    print(f"--- Analyzing Unity Editor Log: {file_path} ---\n")
     
     error_pattern = re.compile(r"(Exception|Error|NullReferenceException|Assertion failed)", re.IGNORECASE)
     
@@ -33,12 +33,12 @@ def parse_log(file_path, output_limit=50):
         lines = f.readlines()
 
     for line in lines:
-        # Limpiar salto de línea
+        # Clean newline
         line = line.rstrip()
 
-        # Si encontramos una palabra clave de error, empezamos a capturar
+        # If an error keyword is found, start capturing
         if error_pattern.search(line):
-            if current_error: # Guardar el error anterior si existe
+            if current_error: # Save previous error if exists
                 extracted_errors.append("\n".join(current_error))
                 current_error = []
             
@@ -46,42 +46,42 @@ def parse_log(file_path, output_limit=50):
             capturing_stack = True
             continue
         
-        # Si estamos capturando el stack trace
+        # If capturing stack trace
         if capturing_stack:
-            # Los stack traces en Unity suelen empezar con "  at " o rutas de archivos
+            # Unity stack traces usually start with "at " or file paths
             if line.strip().startswith("at ") or ".cs:" in line or "UnityEngine." in line:
                 current_error.append(line)
             elif line.strip() == "":
-                # Línea vacía a menudo significa fin del bloque de error
+                # Empty line often means end of error block
                 capturing_stack = False
             else:
-                # Si la línea no parece parte del stack trace, detenemos la captura
+                # If the line doesn't seem part of the stack trace, stop capturing
                 capturing_stack = False
 
-    # Añadir el último error capturado
+    # Add the last captured error
     if current_error:
         extracted_errors.append("\n".join(current_error))
 
-    # Eliminar duplicados (muy común en el log de Unity)
+    # Remove duplicates (common in Unity logs)
     unique_errors = list(dict.fromkeys(extracted_errors))
 
     if not unique_errors:
-        print("✅ No se encontraron excepciones o errores críticos en el log analizado.")
+        print("✅ No critical exceptions or errors found in the analyzed log.")
         return
 
-    print(f"🔥 Se encontraron {len(unique_errors)} errores únicos. Mostrando los últimos {output_limit}:\n")
+    print(f"🔥 Found {len(unique_errors)} unique errors. Showing the last {output_limit}:\n")
     
-    # Mostrar solo los últimos 'output_limit' errores para no quemar tokens de la IA
+    # Show only the last 'output_limit' errors to save tokens
     for i, error in enumerate(unique_errors[-output_limit:], 1):
         print(f"--- ERROR {i} ---")
         print(f"{error}\n")
 
 if __name__ == "__main__":
-    # Permite pasar la ruta del log como argumento, o usa la de por defecto
+    # Allows passing the log path as an argument, or use the default
     log_path = sys.argv[1] if len(sys.argv) > 1 else get_default_log_path()
     
     if log_path:
         parse_log(log_path)
     else:
-        print("No se pudo determinar la ruta por defecto del log para este sistema operativo.")
-        print("Uso: python parse_editor_log.py <ruta_al_archivo.log>")
+        print("Could not determine the default log path for this operating system.")
+        print("Usage: python parse_editor_log.py <path_to_log_file>")
