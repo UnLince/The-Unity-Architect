@@ -4,7 +4,7 @@ import sys
 from datetime import datetime
 
 # Configuration
-VERSION = "1.3.2"
+VERSION = "1.3.3"
 FRAMEWORK_DIR = "The-Unity-Architect"
 
 class C:
