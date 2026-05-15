@@ -21,7 +21,7 @@ Six weeks later, you can't change anything without breaking everything.
 The Unity Architect is a framework of AI skills, Markdown protocols, and diagnostic scripts that teaches your AI to think like a senior Unity engineer — not a college student on a deadline.
 
 > [!TIP]
-> **New in v1.3.3:** Refined "Senior Architect" persona with stricter Design-First enforcement.
+> **New in v1.3.4:** Definitive long-form documentation and refined AI persona.
 
 > [!NOTE]
 > **New to the framework?** Read [WALKTHROUGH.md](./WALKTHROUGH.md) for your first session, whether your project is brand new or already has 50,000 lines of code.
@@ -256,7 +256,7 @@ The Wiki gives every new contributor instant access to every architectural decis
 
 ---
 
-## 🛠️ The Architect Toolkit (v1.3.3)
+## 🛠️ The Architect Toolkit (v1.3.4)
 
 Everything installs into a single centralized folder, so your Unity project stays clean:
 
