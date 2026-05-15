@@ -76,10 +76,10 @@ The framework creates a centralized `The-Unity-Architect/Wiki/` folder. The AI m
 > **Upgrading?** The installer now detects previous versions and offers an **interactive clean-up** to ensure your project stays tidy.
 
 ```text
-                      A R C H I T E C T  v1.3.1
+                      A R C H I T E C T  v1.3.2
 ```
 
-## 🛠️ The Architect Toolkit (v1.3.1)
+## 🛠️ The Architect Toolkit (v1.3.2)
 
 Everything is now centralized under the `The-Unity-Architect/` directory to keep your project clean:
 
