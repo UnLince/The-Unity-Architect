@@ -39,7 +39,6 @@ def inject_config(project_root, injection_text):
     targets = ["agents.md", ".cursorrules", "CLAUDE.md", ".windsurfrules"]
     for target in targets:
         target_path = os.path.join(project_root, target)
-        # Always create agents.md, others only if exist or forced
         if target == "agents.md" or os.path.exists(target_path):
             if os.path.exists(target_path):
                 with open(target_path, "r", encoding="utf-8") as f:
@@ -51,8 +50,8 @@ def inject_config(project_root, injection_text):
                 else:
                     log_info(f"{target} already configured.")
             else:
-                with os.open(target_path, os.O_CREAT | os.O_WRONLY, 0o644) as fd:
-                    os.write(fd, injection_text.encode('utf-8'))
+                with open(target_path, "w", encoding="utf-8") as f:
+                    f.write(injection_text)
                 log_ok(f"Created and configured {target}")
 
 def main():
@@ -101,16 +100,22 @@ def main():
     index_path = os.path.join(wiki_path, "Index.md")
     if not os.path.exists(index_path):
         with open(index_path, "w") as f:
-            f.write("# Mega-Brain Wiki Index\n\n## Categories\n- [ADR](./ADR/)\n- [Systems](./Systems/)\n- [Features](./Features/)\n")
-    
+            f.write("# Mega-Brain Wiki Index\n\n## Categories\n- [ADR](./ADR/)\n- [Systems](./Systems/)\n- [Features](./Features/)\n- [Lore](./Lore/)\n")
     log_ok("Wiki structure ready.")
 
     # Step 4: AI Config
     log_step("Step 4/4 — Configuring AI")
     ai_config_file = os.path.join(templates, "ai-config", "injection.md")
-    with open(ai_config_file, "r", encoding="utf-8") as f:
-        injection = f.read()
-    inject_config(project_root, injection)
+    if os.path.exists(ai_config_file):
+        with open(ai_config_file, "r", encoding="utf-8") as f:
+            injection = f.read()
+        inject_config(project_root, injection)
+
+    # Walkthrough
+    walkthrough_src = os.path.join(repo_dir, "WALKTHROUGH.md")
+    if os.path.exists(walkthrough_src):
+        shutil.copy2(walkthrough_src, os.path.join(project_root, "WALKTHROUGH.md"))
+        log_ok("Walkthrough guide copied to project root.")
 
     print(f"\n{C.BOLD}{C.GREEN}  ✔ Success! Centralized in {FRAMEWORK_DIR}/{C.RESET}\n")
 
