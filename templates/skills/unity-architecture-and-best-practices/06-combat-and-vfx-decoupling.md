@@ -1,20 +1,20 @@
 ---
 name: unity-arch-combat-vfx
-description: Mejores prácticas para desacoplar sistemas de combate, animaciones y efectos visuales. Úsalo para hitboxes y eventos de animación seguros.
-tags: [architecture, combat, vfx, decoupling]
+description: Best practices for decoupling combat systems, animations, and visual effects. Covers hitboxes and safe animation events.
 ---
 
-# Submódulo: Desacoplamiento de Combate y VFX
+# Sub-module: Combat and VFX Decoupling
 
-## 1. Animaciones como Feedback, No como Lógica
+## 1. Animations as Feedback, Not Logic
 
-Un error común es atar el daño de un ataque al frame exacto de una animación. Si la animación cambia, el combate se rompe.
+A common mistake is tying attack damage to the exact frame of an animation. If the animation changes, the combat system breaks.
 
-*   **Eventos de Animación (Animation Events):** Úsalos con precaución. Prefiere que la lógica llame a la animación y gestione su propio temporizador de impacto si la precisión técnica es crítica.
-*   **Feedback Visual:** El script de combate solo debe decir `PlayParticle()`, no debe configurar el color o el tamaño del efecto. Deja eso al sistema visual.
+*   **Animation Events:** Use with caution. Prefer having logic call the animation and manage its own impact timer if technical precision is critical.
+*   **Visual Feedback:** The combat script should only call `PlayParticle()`; it shouldn't configure the particle's color or size. Leave those details to the visual system.
 
 ---
 
-## 2. Hitboxes y Triggers
+## 2. Hitboxes and Triggers
 
-*   Usa capas de colisión (Layer-based Collision) para filtrar qué puede golpear a qué. Es mucho más eficiente que preguntar `if (tag == "Player")` en cada colisión.
+*   Use **Layer-based Collision** to filter what can hit what. It is much more efficient than checking `if (tag == "Player")` on every collision.
+*   Clearly distinguish between **Logic Colliders** (hitboxes) and **Physics Colliders** (environment collision).

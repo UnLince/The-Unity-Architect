@@ -1,23 +1,22 @@
 ---
 name: unity-arch-modular-glue-code
-description: Técnicas para conectar componentes sin crear interdependencias rígidas. Úsalo para configurar [RequireComponent] y dependencias explícitas.
-tags: [architecture, modularity, dependencies]
+description: Techniques for connecting components without creating rigid interdependencies. Covers [RequireComponent] and explicit dependency management.
 ---
 
-# Submódulo: Sistemas Modulares y Código "Glue"
+# Sub-module: Modular Systems and "Glue" Code
 
-## 1. Dependencias Explícitas vs. Implícitas
+## 1. Explicit vs. Implicit Dependencies
 
-El error más común es asumir que un componente existe sin validarlo, lo que causa el temido `NullReferenceException`.
+The most common error is assuming a component exists without validating it, leading to the dreaded `NullReferenceException`.
 
-* **Usa `[RequireComponent]`:** Obliga a Unity a añadir el componente necesario automáticamente. **Por qué:** Documenta el requisito directamente en el código y previene errores en tiempo de ejecución.
-* **Inyección de Dependencias Simple:** Prefiere pasar las referencias en el Inspector o vía constructor/init, en lugar de usar `GameObject.Find()`.
+* **Use `[RequireComponent]`:** Forces Unity to add the necessary component automatically. **Why:** It documents requirements directly in the code and prevents runtime errors.
+* **Simple Dependency Injection:** Prefer passing references via the Inspector or through an Init method/constructor instead of using `GameObject.Find()`.
 
 ---
 
-## 2. Prefabs y "Nesting"
+## 2. Prefabs and Nesting
 
-La arquitectura modular vive en los Prefabs.
+Modular architecture lives within Prefabs.
 
-* Aconseja al usuario dividir sus objetos complejos en Prefabs anidados (Nested Prefabs). Un `Enemigo` puede tener un Prefab de `HealthBar` y otro de `Model`.
-* Esto permite trabajar en partes del sistema sin bloquear el archivo principal.
+* Advise the user to split complex objects into **Nested Prefabs**. For example, an `Enemy` can have a `HealthBar` prefab and a `VisualModel` prefab.
+* This allows parallel work on different parts of a system without locking the main file.

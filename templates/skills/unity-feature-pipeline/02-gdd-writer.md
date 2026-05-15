@@ -1,54 +1,57 @@
-# Skill: Unity GDD Writer (Game Design Documenter)
+---
+name: unity-gdd-writer
+description: Design documentation for Unity features. Consolidates the validated design from the Grill phase into a structured "Contract of Truth" (PRD/GDD) and updates the project Wiki.
+---
 
-**Description:** El segundo paso del pipeline. ÚSALO cuando el diseño de una feature haya sido validado mediante el `unity-quest-giver`. Tu objetivo es consolidar todo el conocimiento extraído en un documento estructurado que sirva como "Contrato de Verdad" para la implementación.
+# Skill: Unity GDD Writer (Design Architect)
+
+The second step of the pipeline. Use ONLY when the feature design has been validated through `unity-quest-giver`. Your goal is to consolidate all extracted knowledge into a structured document that serves as the "Contract of Truth" for implementation.
 
 ---
 
-## ⚖️ Las Leyes de Hierro (Iron Laws)
+## ⚖️ The Iron Laws
 
-1. **Documento Vivo:** El GDD/PRD generado debe ser guardado en el repositorio (ej. `Docs/Features/[FeatureName].md`).
-2. **Claridad sobre Complejidad:** Usa tablas y diagramas (Mermaid) si es necesario para explicar flujos lógicos.
-3. **Cero Código:** NO incluyas snippets de C# ni rutas de archivos específicos (`file paths`) en el GDD. Estos se desactualizan rápido. Define interfaces y comportamientos, no implementaciones.
-4. **Validación del Usuario:** El documento debe terminar con una solicitud de firma/aprobación por parte del usuario.
-
-
----
-
-## 📋 Estructura Obligatoria del Documento
-
-Cada GDD generado debe seguir esta estructura:
-
-### 1. Resumen de la Feature (Elevator Pitch)
-*   **Nombre:**
-*   **Objetivo:** ¿Qué problema resuelve o qué diversión añade?
-*   **Alcance:** ¿Qué *no* hace esta feature (Límites)?
-
-### 2. Reglas de Negocio (Lógica de Juego)
-*   **Flujo Principal:** Paso a paso de la experiencia del jugador.
-*   **Estados:** Lista de estados posibles (ej. Idle, Charging, Cooldown).
-*   **Condiciones de Fallo:** ¿Qué detiene el proceso?
-
-### 3. Requisitos Técnicos
-*   **Componentes Necesarios:** Lista de componentes teóricos (ej. `InputHandler`, `MovementController`).
-*   **Configuración:** Parámetros que deben ser expuestos en el Inspector (ej. `Speed`, `JumpForce`).
-*   **Dependencias:** Otros sistemas con los que debe hablar (ej. `InventorySystem`, `AudioManager`).
-
-### 4. Casos Borde y Excepciones
-*   Registro de los puntos críticos resueltos en la fase de "Grill".
-
-### 5. Fuera de Alcance (Out of Scope)
-*   **Fundamental para evitar Feature Creep:** Enumera explícitamente qué cosas **NO** se van a construir en esta iteración, aunque parezcan relacionadas.
-
+1. **Living Document:** The generated GDD/PRD must be saved in the repository (e.g., `The-Unity-Architect/Wiki/Features/[FeatureName].md`).
+2. **Clarity Over Complexity:** Use tables and diagrams (Mermaid) where necessary to explain logical flows.
+3. **Zero Code:** Do NOT include C# snippets or specific file paths in the GDD. These become outdated quickly. Define interfaces and behaviors, not implementations.
+4. **User Validation:** The document must end with a request for approval/signature from the user.
 
 ---
 
-## 🛑 DIRECTIVA ESTRICTA DEL SISTEMA
+## 📋 Mandatory Document Structure
 
-Tu output principal en esta fase es un bloque de Markdown formateado que el usuario debe copiar o que tú debes escribir en un archivo nuevo. 
+Each generated GDD must follow this structure:
 
-Una vez generado, debes ejecutar el **Trigger 1 (Mega-Brain Wiki Protocol)**:
-*   Actualiza silenciosamente `Docs/Wiki/Index.md` con un enlace al nuevo GDD.
-*   Actualiza `Docs/Wiki/Log.md` registrando la creación de esta nueva feature.
-*   Si el GDD introduce nuevos conceptos de dominio (ej. un nuevo tipo de magia o facción), crea o actualiza los archivos correspondientes en `Docs/Wiki/Lore/` o `Docs/Wiki/Systems/`.
+### 1. Feature Summary (Elevator Pitch)
+*   **Name:**
+*   **Objective:** What problem does it solve or what fun does it add?
+*   **Scope:** What does this feature *not* do (Boundaries)?
 
-Finalmente, pregunta: *"He actualizado el Wiki del proyecto. ¿Refleja este GDD exactamente lo que queremos construir? Si es así, procedamos al desglose de tareas con `unity-issue-slicer`."*
+### 2. Business Rules (Game Logic)
+*   **Main Flow:** Step-by-step player experience.
+*   **States:** List of possible states (e.g., Idle, Charging, Cooldown).
+*   **Failure Conditions:** What stops the process?
+
+### 3. Technical Requirements
+*   **Required Components:** List of theoretical components (e.g., `InputHandler`, `MovementController`).
+*   **Configuration:** Parameters that must be exposed in the Inspector (e.g., `Speed`, `JumpForce`).
+*   **Dependencies:** Other systems it must communicate with (e.g., `InventorySystem`, `AudioManager`).
+
+### 4. Edge Cases and Exceptions
+*   Record of the critical points resolved during the "Grill" phase.
+
+### 5. Out of Scope
+*   **Crucial for avoiding Feature Creep:** Explicitly list what will **NOT** be built in this iteration, even if it seems related.
+
+---
+
+## 🛑 STRICT SYSTEM DIRECTIVE
+
+Your main output in this phase is a formatted Markdown block that the user must copy or that you must write to a new file.
+
+Once generated, you must execute **Trigger: Wiki Sync**:
+*   Update `The-Unity-Architect/Wiki/Index.md` with a link to the new GDD.
+*   Update `The-Unity-Architect/Wiki/Log.md` recording the creation of this new feature.
+*   If the GDD introduces new domain concepts, create/update the corresponding files in `The-Unity-Architect/Wiki/Lore/` or `The-Unity-Architect/Wiki/Systems/`.
+
+Finally, ask: *"I have updated the project Wiki. Does this GDD accurately reflect what we want to build? If so, let's proceed to task breakdown with `unity-issue-slicer`."*

@@ -1,20 +1,20 @@
 ---
 name: unity-debug-rendering-gpu
-description: Identificación de cuellos de botella visuales. Diferencia entre Vertex Bound, Pixel Bound y problemas de Batching.
-tags: [debugging, rendering, gpu, shaders]
+description: Identifying visual bottlenecks. Distinguishing between Vertex Bound, Pixel Bound, and Batching issues.
 ---
 
-# Submódulo: Renderizado y Cuellos de Botella de GPU
+# Sub-module: Rendering and GPU Bottlenecks
 
-## 1. Identificar el Origen: CPU vs GPU
+## 1. Identify the Source: CPU vs. GPU
 
-*   Usa el "Frame Debugger" de Unity.
-*   **Draw Calls:** Si el número de Draw Calls es superior a 200 en móvil o 2000 en PC, el problema es el **Batching**.
-*   **Por qué:** Cada Draw Call es una llamada que la CPU debe preparar para la GPU. Reducirlas (vía Static/Dynamic Batching o GPU Instancing) es la forma más rápida de recuperar FPS.
+*   Utilize the Unity **Frame Debugger**.
+*   **Draw Calls:** If the number of Draw Calls exceeds 200 on mobile or 2000 on PC, the bottleneck is likely **Batching**.
+*   **Why:** Every Draw Call is a command the CPU must prepare for the GPU. Reducing them (via Static/Dynamic Batching or GPU Instancing) is the fastest way to recover FPS.
 
 ---
 
-## 2. Shaders y Overdraw
+## 2. Shaders and Overdraw
 
-*   Muestra el modo de visualización "Overdraw" en la Scene View.
-*   Si la pantalla se ve blanca/brillante, hay demasiadas partículas o capas de transparencia superpuestas. Reducir la densidad de partículas es más efectivo que optimizar el código en este caso.
+*   Enable the **Overdraw** visualization mode in the Scene View.
+*   If the screen appears bright white, there are too many overlapping particles or transparent layers. Reducing particle density or sorting layers is more effective than code optimization in this scenario.
+*   **Shader Complexity:** Check the "Stats" window in the Game view for "Batches" and "SetPass calls." High SetPass calls indicate frequent shader or material switching.

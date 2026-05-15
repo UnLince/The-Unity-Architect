@@ -1,51 +1,55 @@
+---
+name: unity-ui-toolkit
+description: Master guide for high-performance interface development using UI Toolkit. Based on Unity 6+ standards and hardware optimization.
+---
+
 # Skill: Unity UI Toolkit - Best Practices & Performance (Unity 6+)
 
-> Guía maestra para el desarrollo de interfaces de alto rendimiento usando UI Toolkit.  
-> Basada en estándares de Unity 6 y optimización para hardware.
+The master guide for high-performance interface development using UI Toolkit. Based on Unity 6+ standards and hardware-accelerated optimization.
 
 ---
 
-## 🏗️ Arquitectura y Estándares
+## 🏗️ Architecture and Standards
 
 ### 1. Flexbox-First (Yoga Engine)
-*   **Comportamiento por defecto:** La orientación es `flex-direction: column`.
-*   **No use Inline Styles:** Todos los estilos deben vivir en archivos `.uss`. Use variables en `:root` para tokens de diseño (colores, espaciado).
-*   **Componentes Custom (Unity 6):** Use los atributos `[UxmlElement]` y `[UxmlAttribute]` en clases `partial`. Evite el boilerplate antiguo de `UxmlFactory`.
+*   **Default Behavior:** Orientation is `flex-direction: column`.
+*   **No Inline Styles:** All styles must reside in `.uss` files. Use variables in `:root` for design tokens (colors, spacing).
+*   **Custom Components (Unity 6):** Use `[UxmlElement]` and `[UxmlAttribute]` attributes on `partial` classes. Avoid the legacy `UxmlFactory` boilerplate.
 
-### 2. UI Toolkit vs uGUI (¿Cuándo usar qué?)
-*   **UI Toolkit (Retained Mode):** Ideal para HUDs estáticos, Menús, Inventarios y herramientas del Editor.
-*   **uGUI (Immediate/GameObject Mode):** **Obligatorio** para UI en el espacio del mundo (World Space) con alta densidad o transformaciones complejas (ej. barras de vida sobre 100 enemigos), a menos que se use la nueva integración de World Space de Unity 6 con extrema precaución.
-
----
-
-## ⚡ Optimización de Rendimiento (Critical)
-
-### 1. Animaciones y Transformaciones por GPU
-*   **Regla de Oro:** Nunca anime propiedades de layout (`width`, `height`, `margin`, `padding`, `top`, `left`). Esto fuerza un "Layout Recalculation" de todo el árbol en la CPU.
-*   **Solución:** Use transformaciones de GPU: `translate`, `rotate`, `scale`.
-*   **Usage Hints:** Active `UsageHints.DynamicTransform` en elementos que se mueven o animan frecuentemente para que Unity los trate eficientemente en la GPU.
-
-### 2. Gestión de Paneles y Draw Calls
-*   **UIDocument:** Evite tener múltiples `UIDocument` para elementos pequeños. Agrupe tantos elementos como pueda bajo un solo `UIDocument` para maximizar el batching.
-*   **Vertex Budget:** Si su UI es compleja y ve parpadeos o elementos desapareciendo, aumente el **Vertex Budget** en el asset de `Panel Settings`.
-*   **Texturas y Atlasing:** Use el **Sprite Packer** para asegurar que todos los iconos de la UI vivan en el mismo atlas, evitando rupturas de batching.
-
-### 3. "Smart Hiding" (Ocultamiento Inteligente)
-*   **display: none** vs **visibility: hidden**:
-    *   `display: none`: Remueve el elemento del cálculo de layout (más eficiente si no cambia seguido).
-    *   `visibility: hidden`: El elemento sigue ocupando espacio en el layout pero no se renderiza.
-*   **No use opacity: 0** para ocultar elementos: Siguen procesando eventos y gastando recursos de renderizado.
+### 2. UI Toolkit vs. uGUI (When to use what?)
+*   **UI Toolkit (Retained Mode):** Ideal for static HUDs, Menus, Inventories, and Editor tools.
+*   **uGUI (Immediate/GameObject Mode):** **Mandatory** for World Space UI with high density or complex billboard transformations (e.g., health bars over 100 enemies), unless using the specific Unity 6 World Space integration with extreme caution.
 
 ---
 
-## 🛠️ Herramientas de Diagnóstico
-1.  **UI Toolkit Debugger:** Para inspeccionar el visual tree y tiempos de layout.
-2.  **Panel Settings -> Live Reload:** Manténgalo activo durante el desarrollo para ver cambios en USS/UXML al instante.
-3.  **Frame Debugger:** Crucial para identificar por qué se rompe el batching entre elementos.
+## ⚡ Performance Optimization (Critical)
+
+### 1. GPU-Based Animations and Transforms
+*   **Golden Rule:** NEVER animate layout properties (`width`, `height`, `margin`, `padding`, `top`, `left`). This forces a CPU-intensive "Layout Recalculation" of the entire visual tree.
+*   **Solution:** Use GPU-accelerated transforms: `translate`, `rotate`, `scale`.
+*   **Usage Hints:** Enable `UsageHints.DynamicTransform` on elements that move or animate frequently to ensure efficient GPU handling.
+
+### 2. Panel Management and Draw Calls
+*   **UIDocument:** Avoid having multiple `UIDocument` components for small elements. Group as many elements as possible under a single `UIDocument` to maximize batching.
+*   **Vertex Budget:** If your UI is complex and you see flickering or disappearing elements, increase the **Vertex Budget** in the `Panel Settings` asset.
+*   **Texturing and Atlasing:** Use the **Sprite Packer** to ensure all UI icons reside in the same atlas, preventing batching breaks.
+
+### 3. "Smart Hiding"
+*   **display: none** vs. **visibility: hidden**:
+    *   `display: none`: Removes the element from layout calculations (most efficient for long-term hiding).
+    *   `visibility: hidden`: The element still occupies layout space but is not rendered.
+*   **Do NOT use opacity: 0** to hide elements: They still process events and consume rendering resources.
 
 ---
 
-## 🚫 Errores Comunes (Anti-Patterns)
-*   **Deep Nesting:** Evite jerarquías excesivamente profundas de VisualElements. Cada nivel añade costo al cálculo de Flexbox.
-*   **UxmlFactory manual:** No escriba `UxmlFactory` manualmente en Unity 6; deje que el generador de código lo haga por usted.
-*   **Anclajes complejos en World Space:** Evite layouts dinámicos (Flex) en objetos que se mueven rápido en el espacio 3D.
+## 🛠️ Diagnostic Tools
+1.  **UI Toolkit Debugger:** Essential for inspecting the visual tree and layout timings.
+2.  **Panel Settings -> Live Reload:** Keep enabled during development to see USS/UXML changes instantly.
+3.  **Frame Debugger:** Crucial for identifying why batching breaks between UI elements.
+
+---
+
+## 🚫 Common Pitfalls (Anti-Patterns)
+*   **Deep Nesting:** Avoid excessively deep hierarchies of `VisualElements`. Every level adds cost to Flexbox calculations.
+*   **Manual UxmlFactory:** Do not write `UxmlFactory` manually in Unity 6; leverage the code generator.
+*   **Complex World Space Anchors:** Avoid dynamic layouts (Flex) on objects moving rapidly in 3D space.

@@ -1,22 +1,21 @@
 ---
 name: unity-arch-performance-patterns
-description: Micro-arquitectura para alto rendimiento. Guía para evitar GC.Alloc, optimizar Updates y usar APIs NonAlloc.
-tags: [architecture, performance, optimization, cleanup]
+description: Micro-architecture for high performance. Guide to avoiding GC.Alloc, optimizing Updates, and using NonAlloc APIs.
 ---
 
-# Submódulo: Patrones de Programación para el Rendimiento
+# Sub-module: Performance Coding Patterns
 
-## 1. Gestión de Memoria (Garbage Collector)
+## 1. Memory Management (Garbage Collector)
 
-En Unity, el GC es tu peor enemigo. Los "picos" de lag suelen ser limpiezas de memoria.
+In Unity, the GC is your enemy. Lag spikes are often caused by memory cleanup.
 
-*   **Caching de Referencias:** NUNCA uses `GetComponent` ni `Find` dentro de un `Update`. Hazlo en `Awake` o `Start`.
-*   **Strings:** Evita concatenar strings en el `Update` (ej. para un contador de moneda). Usa `StringBuilder` o actualiza el texto solo cuando el valor cambie.
+*   **Reference Caching:** NEVER use `GetComponent` or `Find` inside `Update`. Cache them in `Awake` or `Start`.
+*   **Strings:** Avoid string concatenation in `Update` (e.g., for a currency counter). Use `StringBuilder` or only update the text when the value actually changes.
 
 ---
 
-## 2. Optimización de Updates
+## 2. Update Optimization
 
-*   No todos los sistemas necesitan correr a 60 FPS (o más).
-*   **Time-slicing:** Reparte cálculos pesados a través de múltiples frames o usa `Coroutine` / `Async` para tareas que no afectan la física inmediata.
-*   **Update Manager:** Para proyectos con miles de objetos, considera un Manager centralizado que llame a una función personalizada en lugar de usar miles de métodos `Update()` de Unity, lo que reduce el costo de cambio entre C++ y C#.
+*   Not every system needs to run at 60+ FPS.
+*   **Time-slicing:** Distribute heavy calculations across multiple frames or use `Coroutine` / `Async` for tasks that don't affect immediate physics.
+*   **Update Manager:** For projects with thousands of objects, consider a centralized Manager that calls a custom tick function instead of using thousands of native `Update()` methods. This reduces the C++ to C# context-switch overhead.

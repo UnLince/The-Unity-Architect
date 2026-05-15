@@ -1,25 +1,24 @@
 ---
 name: unity-arch-ui-presentation
-description: Arquitectura para separar la lógica del juego de la interfaz visual usando patrones MVP o MVC. Úsalo si el proyecto tiene menús complejos.
-tags: [architecture, ui, mvp, mvc]
+description: Architecture for separating game logic from visual interfaces using MVP or MVC patterns. Essential for complex menu systems.
 ---
 
-# Submódulo: Arquitectura de UI y Presentación
+# Sub-module: UI and Presentation Architecture
 
-## 1. Separación de Preocupaciones (MVP/MVC)
+## 1. Separation of Concerns (MVP/MVC)
 
-La lógica del juego NUNCA debe depender de la UI.
+Game logic should NEVER depend on the UI.
 
-* **Model:** Los datos puros (ej. `int Score`). No sabe que existe la UI.
-* **View:** El componente de Unity (`TextMeshPro`, `Image`). Solo sabe mostrar datos.
-* **Presenter/Controller:** El puente. Escucha cambios en el Model y actualiza la View.
-* **Por qué:** Si decides cambiar de UGUI a UI Toolkit, solo tienes que reescribir la View. El núcleo de tu juego permanece intacto.
+* **Model:** Pure data (e.g., `int Score`). It is unaware of the UI's existence.
+* **View:** The Unity component (`TextMeshPro`, `Image`). It only knows how to display data.
+* **Presenter/Controller:** The bridge. Listens for changes in the Model and updates the View accordingly.
+* **Why:** If you decide to switch from UGUI to UI Toolkit, you only need to rewrite the View. Your game's core remains intact.
 
 ---
 
-## 2. Optimización de UI
+## 2. UI Optimization
 
-La UI suele ser el mayor cuello de botella en dispositivos móviles.
+The UI is often the biggest bottleneck on mobile devices.
 
-* **Evita Raycast Target:** Desactívalo en imágenes que no necesitan clicks. Ahorra cálculos de colisión innecesarios cada frame.
-* **Canvas Grouping:** Divide la UI en múltiples Canvas según su frecuencia de actualización. Un Canvas para lo estático y otro para lo dinámico (barras de vida).
+* **Avoid Raycast Target:** Disable it on images that don't need clicks. This saves unnecessary collision calculations every frame.
+* **Canvas Grouping:** Split your UI into multiple Canvases based on their update frequency. Use one Canvas for static elements and another for dynamic ones (e.g., health bars).

@@ -1,42 +1,41 @@
 ---
 name: unity-arch-core-design-patterns
-description: Implementación senior de patrones de diseño adaptados a Unity. Úsalo para decidir la comunicación entre sistemas complejos (Eventos, Singletons, States).
-tags: [architecture, patterns, events, singleton]
+description: Senior implementation of design patterns adapted for Unity. Covers Events, Singletons, and State Machines.
 ---
 
-# Submódulo: Patrones de Diseño Core Aplicados a Unity
-
----
-
-## 1. Comunicación por Eventos (Desacoplamiento)
-
-Este es el patrón más importante para evitar el "Código Espagueti".
-
-* **Patrón Observer:** Prefiere `System.Action` o `UnityEvent` para que los sistemas se reporten entre sí sin conocerse.
-* **Por qué:** Si el `Player` emite un evento `OnDeath`, el `UIManager` y el `AudioManager` pueden reaccionar sin que el script de `Player` tenga una referencia a ellos. Esto permite borrar el sistema de audio sin que el código del jugador deje de compilar.
+# Sub-module: Core Design Patterns for Unity
 
 ---
 
-## 2. El Dilema del Singleton
+## 1. Event-Driven Communication (Decoupling)
 
-El Singleton es una herramienta poderosa pero peligrosa.
+The most important pattern to avoid "Spaghetti Code."
 
-* **Uso Permitido:** Managers únicos y persistentes que no almacenan estado volátil (ej. `GameManager`, `SoundManager`).
-* **Uso Prohibido:** Como "bolsa de basura" de variables globales.
-* **Mejora Senior:** Considera **ScriptableObject-based Architecture** (Event Channels) como alternativa a Singletons para comunicación entre escenas.
-
----
-
-## 3. State Machines (Máquinas de Estado)
-
-Fundamental para IA, controladores de personaje y flujos de juego.
-
-* Para sistemas simples, usa un `enum` y un `switch`.
-* Para sistemas complejos, usa el **State Pattern** (clases por estado).
-* **Refinamiento:** Inyecta siempre el estado anterior y el nuevo en los logs de depuración para poder rastrear transiciones rotas.
+* **Observer Pattern:** Prefer `System.Action` or `UnityEvent` for systems to report to each other without direct knowledge.
+* **Why:** If the `Player` emits an `OnDeath` event, the `UIManager` and `AudioManager` can react without the `Player` script needing references to them. This allows you to delete the audio system without breaking player compilation.
 
 ---
 
-## 🛑 REGLA DE ORO DEL ARQUITECTO
+## 2. The Singleton Dilemma
 
-No elijas el patrón más "inteligente", elige el más simple que cumpla el requisito. La sobre-ingeniería es tan peligrosa como la falta de arquitectura. Explica siempre al usuario por qué un patrón específico es la mejor elección para su caso de uso actual.
+Singletons are powerful but dangerous tools.
+
+* **Allowed Use:** Persistent, unique Managers that don't store volatile state (e.g., `GameManager`, `SoundManager`).
+* **Forbidden Use:** As a "trash bag" for global variables.
+* **Senior Refinement:** Consider **ScriptableObject-based Architecture** (Event Channels) as an alternative to Singletons for cross-scene communication.
+
+---
+
+## 3. State Machines
+
+Fundamental for AI, character controllers, and game flows.
+
+* For simple systems, use an `enum` and a `switch`.
+* For complex systems, use the **State Pattern** (class-per-state).
+* **Refinement:** Always log the previous and new state in debug logs to track broken transitions.
+
+---
+
+## 🛑 THE ARCHITECT'S GOLDEN RULE
+
+Do not choose the "smartest" pattern; choose the simplest one that meets the requirement. Over-engineering is as dangerous as lack of architecture. Always explain to the user why a specific pattern is the best choice for their current use case.

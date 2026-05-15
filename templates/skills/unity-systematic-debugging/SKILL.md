@@ -1,94 +1,95 @@
+---
+name: unity-systematic-debugging
+description: The definitive framework for resolving bugs, exceptions, and bottlenecks in Unity. Use ALWAYS when unexpected behavior, console errors, or FPS drops are reported. Enforces the scientific method.
+---
+
 # Skill: Unity Systematic Debugging
 
-**Description:** El framework definitivo para resolver bugs, excepciones y cuellos de botella en Unity. ÚSALO SIEMPRE que el usuario reporte un comportamiento inesperado, errores de consola o caídas de FPS, incluso si no pide ayuda técnica. Este skill previene arreglos superficiales y garantiza que se encuentre la causa raíz antes de escribir una sola línea de código de solución.
+The definitive framework for resolving bugs, exceptions, and bottlenecks in Unity. Use ALWAYS whenever the user reports unexpected behavior, console errors, or FPS drops—even if they don't explicitly ask for technical help. This skill prevents superficial fixes and ensures the root cause is found before writing a single line of solution code.
 
 ---
 
-## ⚖️ Las Leyes de Hierro (Iron Laws)
+## ⚖️ The Iron Laws
 
-Como agente de IA, tienes PROHIBIDO romper estas reglas durante una sesión de depuración en Unity:
+As an AI agent, you are FORBIDDEN from breaking these rules during a Unity debugging session:
 
-1. [cite_start]**Cero Tolerancia al "Witch Doctor Debugging":** NUNCA propongas "arreglos a ciegas" o ensayo y error [guess-and-check](cite: 3087, 3098). Si no entiendes la causa raíz, tu respuesta debe ser una pregunta o un experimento para descubrirla.
-2. **El código es solo el 50% de la verdad:** Nunca asumas el estado de un `GameObject` basándote solo en el script `.cs`. Los bugs de Unity suelen vivir en el Inspector, en el orden de ejecución, en Prefabs corruptos, o en ScriptableObjects. Pide siempre verificar el entorno.
-3. [cite_start]**Sigue el Método Científico Estrictamente:** Debes formular una hipótesis explicativa y proponer un experimento (prueba) que valide o invalide dicha hipótesis antes de escribir el código de la solución final[cite: 3090, 3969, 3970].
-4. [cite_start]**Validación Humana Obligatoria:** Los parches generados por IA requieren validación humana contra la lógica de negocio del dominio[cite: 3147]. Obliga al usuario a confirmar los resultados de las pruebas empíricas.
-
----
-
-## 🔬 Fases de Depuración Sistemática
-
-Debes guiar al usuario a través de estas fases en orden estricto. La omisión de datos en fases tempranas garantiza el fracaso en la solución.
-
-### Fase 0: Bucle de Feedback y Contexto Persistente
-
-Antes de teorizar, debemos saber si el terreno es sólido. **Sin un bucle de feedback rápido y determinista, mirar código no sirve de nada.**
-
-* **Construir el Bucle de Feedback:** Exige al usuario que aísle el problema. ¿Se puede crear una Escena de Prueba (Test Scene) donde el bug ocurra en menos de 5 segundos? ¿Se puede reproducir usando un botón en el Inspector `[ContextMenu]`?
-* **Verificar Reproducibilidad:** ¿El bug ocurre el 100% de las veces en el bucle? Si es intermitente, prohíbe cambios de código y prioriza subir la tasa de reproducción.
-* **Debug Log Persistente:** Crea o actualiza un archivo `debug_context.json` o `debug_report.md` en el disco. Registra cada experimento fallido y cada dato confirmado. Esto evita que "olvides" el progreso en sesiones largas.
-
-### Fase 1: Definición del Problema y Análisis "Is / Is Not"
-
-[cite_start]El objetivo no es adivinar qué falla, sino aislar el espacio del problema estableciendo límites claros[cite: 3092, 3093].
-
-* **Identificar el síntoma exacto:** Pide el stack trace completo, el comportamiento visual, o la métrica de rendimiento (ej. FPS, GC Alloc).
-* [cite_start]**Aplicar Análisis "Is/Is Not"**[cite: 4034]:
-  * *Dónde* ocurre el error vs. *Dónde no* ocurre (ej. ¿Falla en un nivel específico o en todos?).
-  * *Cuándo* sucede vs. *Cuándo no* sucede (ej. ¿En `Awake` o al colisionar?).
-  * *Contexto de ejecución:* ¿Ocurre en el Editor, en Play Mode, o en una Build (Mono vs IL2CPP)?
-
-### Fase 2: Formulación de Hipótesis y Búsqueda Binaria
-
-Con los límites definidos, formula **3 a 5 hipótesis falsables** antes de probar nada.
-
-*   **Formato Falsable Estricto:** Toda hipótesis debe plantearse como: *"Si [X] es la causa, entonces cambiar [Y] hará que el bug desaparezca"*. Si no puedes plantearlo así, es una adivinanza, no una hipótesis.
-*   Si el espacio de búsqueda es grande (ej. un script masivo o una escena compleja), instruye al usuario a usar **Búsqueda Binaria**: desactivar la mitad de los sistemas/scripts para ver si el bug persiste, y repetir hasta aislar al culpable.
-
-### Fase 3: Experimentación y Telemetría
-
-[cite_start]Diseña un experimento para que el usuario valide la hipótesis más probable[cite: 3094, 3979].
-
-* **Instrumentación Estratégica:** No sugieras llenar el código de `Debug.Log` al azar. [cite_start]Pide logs enfocados en puntos de entrada/salida de funciones críticas o límites de estado[cite: 3104, 3105].
-* **Herramientas Nativas:** Solicita al usuario que utilice las herramientas de diagnóstico correctas según el caso:
-  * *Frame Debugger / Render Graph Viewer* para problemas visuales o de GPU.
-  * *Memory Profiler* para fugas o GC Spikes.
-  * *Entity Debugger* si se trata de arquitectura DOTS/ECS.
-
-### Fase 4: Implementación y Validación
-
-Solo cuando el usuario confirme los resultados del experimento y se haya aislado la causa raíz, puedes proponer el código de solución.
-
-* Proporciona la solución exacta.
-* Si la solución requiere cambios en el Editor (ej. reasignar referencias, cambiar Script Execution Order), dalo como un paso numerado y explícito.
+1. **Zero Tolerance for "Witch Doctor Debugging":** NEVER propose "blind fixes" or guess-and-check. If you do not understand the root cause, your response must be a question or an experiment to uncover it.
+2. **Code is only 50% of the truth:** Never assume the state of a `GameObject` based only on the `.cs` script. Unity bugs often live in the Inspector, execution order, corrupted Prefabs, or ScriptableObjects. Always ask to verify the environment.
+3. **Strict Scientific Method:** You must formulate an explanatory hypothesis and propose an experiment (test) that validates or invalidates said hypothesis before writing any solution code.
+4. **Mandatory Human Validation:** AI-generated patches require human validation against the domain's business logic. Force the user to confirm the results of empirical tests.
 
 ---
 
-## 🗂️ Enrutamiento de Sub-módulos
+## 🔬 Systematic Debugging Phases
 
-Si identificas que la causa raíz pertenece a una de las siguientes categorías, adapta tu diagnóstico usando las reglas de los submódulos correspondientes:
+Guide the user through these phases in strict order. Omitting data in early phases guarantees failure.
 
-* **[01-scientific-method-and-logs.md]:** Para rastreo general, race conditions y lógica pura.
-* **[02-state-and-serialization.md]:** Para NullReferenceExceptions, dependencias perdidas en el Inspector, y problemas de ciclo de vida (`Awake`/`Start`/`Update`).
-* **[03-memory-and-gc-profiling.md]:** Para tirones de framerate (stutters), fugas de memoria, y optimización de recolección de basura.
-* **[04-dots-and-ecs-diagnostics.md]:** Para proyectos usando Entity Component System, Burst Compiler, o problemas de multihilo.
-* **[05-rendering-and-gpu-bottlenecks.md]:** Para caídas severas de FPS vinculadas a URP/HDRP, draw calls, o problemas de shading.
+### Phase 0: Feedback Loop and Persistent Context
+
+Before theorizing, we must know if the ground is solid. **Without a fast, deterministic feedback loop, looking at code is useless.**
+
+* **Build the Feedback Loop:** Require the user to isolate the problem. Can a Test Scene be created where the bug occurs in under 5 seconds? Can it be reproduced via a `[ContextMenu]` button in the Inspector?
+* **Verify Reproducibility:** Does the bug occur 100% of the time in the loop? If it is intermittent, forbid code changes and prioritize increasing the reproduction rate.
+* **Persistent Debug Log:** Create or update a `debug_report.md` on disk. Record every failed experiment and every confirmed data point. This prevents "forgetting" progress across long sessions.
+
+### Phase 1: Problem Definition and "Is / Is Not" Analysis
+
+The goal is not to guess what's failing, but to isolate the problem space by establishing clear boundaries.
+
+* **Identify the Exact Symptom:** Ask for the full stack trace, visual behavior, or performance metric (e.g., FPS, GC Alloc).
+* **Apply "Is/Is Not" Analysis:**
+  * *Where* does it occur vs. *Where not* (e.g., specific level or all levels?).
+  * *When* does it happen vs. *When not* (e.g., in `Awake` or on collision?).
+  * *Execution Context:* Editor, Play Mode, or a Build (Mono vs. IL2CPP)?
+
+### Phase 2: Hypothesis Formulation and Binary Search
+
+With boundaries defined, formulate **3 to 5 falsifiable hypotheses** before testing anything.
+
+*   **Strict Falsifiable Format:** Every hypothesis must be stated as: *"If [X] is the cause, then changing [Y] will make the bug disappear"*. If you cannot state it this way, it is a guess, not a hypothesis.
+*   **Binary Search:** If the search space is large (e.g., a massive script), instruct the user to disable half of the systems/scripts to see if the bug persists, repeating until the culprit is isolated.
+
+### Phase 3: Experimentation and Telemetry
+
+Design an experiment for the user to validate the most probable hypothesis.
+
+* **Strategic Instrumentation:** Don't suggest random `Debug.Log` calls. Focus logs on entry/exit points of critical functions or state boundaries.
+* **Native Tools:** Request the user utilize the correct diagnostic tool for the case:
+  * *Frame Debugger / Render Graph Viewer* for visual or GPU issues.
+  * *Memory Profiler* for leaks or GC Spikes.
+  * *Entity Debugger* for DOTS/ECS architecture.
+
+### Phase 4: Implementation and Validation
+
+Only when the user confirms the experiment results and the root cause is isolated, can you propose the solution code.
+
+* Provide the exact solution.
+* If the solution requires Editor changes (e.g., reassigning references, changing Execution Order), provide it as explicit, numbered steps.
 
 ---
 
-## 🛠️ Herramientas de Análisis Activo (Scripts Ejecutables)
+## 🗂️ Sub-module Routing
 
-Como agente de IA, tienes PERMISO EXPLÍCITO para ejecutar los siguientes scripts en la terminal para evitar quemar tokens leyendo archivos masivos y para obtener diagnósticos precisos. Ejecútalos SIEMPRE desde la raíz del proyecto.
+* **[01-scientific-method-and-logs.md]:** Tracking, race conditions, and pure logic.
+* **[02-state-and-serialization.md]:** NullReferenceExceptions, missing Inspector references, and lifecycle issues.
+* **[03-memory-and-gc-profiling.md]:** Framerate stutters, memory leaks, and GC optimization.
+* **[04-dots-and-ecs-diagnostics.md]:** DOTS, Burst Compiler, or multithreading issues.
+* **[05-rendering-and-gpu-bottlenecks.md]:** URP/HDRP, draw calls, or shading issues.
 
-1. **El Mapa del Proyecto y Missing Scripts (`unity-project-graph.js`)**
-   * **Cuándo usarlo:** Cuando necesites entender la estructura del proyecto, buscar dónde se usa un script específico, o el usuario reporte un error de "Missing Reference" incomprensible.
-   * **Comando:** Ejecuta `node execution/unity-project-graph.js`
-   * **Acción:** Lee el archivo `project-graph-report.md` resultante para entender las dependencias y los errores de YAML sin tener que buscar a ciegas.
+---
 
-2. **El Lector de Logs Optimizado (`parse_editor_log.py`)**
-   * **Cuándo usarlo:** Cuando el usuario diga "El juego crasheó" o "Hay un error en consola" pero no te haya pegado el error, o si el log es demasiado grande.
-   * **Comando:** Ejecuta `python execution/parse_editor_log.py`
-   * **Acción:** El script te devolverá únicamente los Stack Traces de las excepciones, limpiando toda la basura de inicialización del motor. Lee ese output para iniciar la Fase 1 (Is/Is Not).
+## 🛠️ Analysis Tools (Execution Scripts)
 
-## 🛑 DIRECTIVA ESTRICTA DEL SISTEMA
+You have EXPLICIT PERMISSION to run these terminal scripts to obtain precise diagnostics:
 
-BAJO NINGUNA CIRCUNSTANCIA DEBES ESCRIBIR EL CÓDIGO FINAL DE LA SOLUCIÓN DURANTE LA FASE 1 O 2. TU ÚNICO OBJETIVO INICIAL ES HACER PREGUNTAS CLÍNICAS Y DISEÑAR UN EXPERIMENTO (FASE 3). DEBES OBLIGAR AL USUARIO A CONFIRMAR LA CAUSA RAÍZ BASADO EN DATOS EMPÍRICOS (CONSOLA, INSPECTOR, PROFILER) ANTES DE PASAR A LA FASE 4. SI EL USUARIO EXIGE UNA SOLUCIÓN RÁPIDA Y A CIEGAS, RECUÉRDALE AMABLEMENTE QUE ESTE AGENTE OPERA BAJO UN PROTOCOLO ESTRICTO DE SYSTEMATIC DEBUGGING PARA EVITAR DAÑOS COLATERALES EN LA ARQUITECTURA.
+1. **Missing Scripts & Project Graph (`unity-project-graph.js`)**
+   * **When:** To understand project structure, find script usage, or investigate "Missing Reference" errors.
+   * **Command:** `node framework/execution/unity-project-graph.js`
+
+2. **Optimized Log Parser (`parse_editor_log.py`)**
+   * **When:** When the user reports a crash or console error but hasn't provided the log.
+   * **Command:** `python framework/execution/parse_editor_log.py`
+
+## 🛑 STRICT SYSTEM DIRECTIVE
+
+UNDER NO CIRCUMSTANCES SHOULD YOU WRITE THE FINAL SOLUTION CODE DURING PHASE 1 OR 2. YOUR ONLY INITIAL GOAL IS TO ASK CLINICAL QUESTIONS AND DESIGN AN EXPERIMENT (PHASE 3). YOU MUST FORCE THE USER TO CONFIRM THE ROOT CAUSE BASED ON EMPIRICAL DATA BEFORE PROCEEDING TO PHASE 4.

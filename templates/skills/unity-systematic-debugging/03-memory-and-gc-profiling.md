@@ -1,21 +1,20 @@
 ---
 name: unity-debug-memory-gc
-description: Guía avanzada para el Unity Profiler. Identificación de fugas de memoria, GC Alloc excesivo y cuellos de botella de CPU.
-tags: [debugging, profiling, performance, memory]
+description: Advanced guide for the Unity Profiler. Identifying memory leaks, excessive GC Alloc, and CPU bottlenecks.
 ---
 
-# Submódulo: Memoria y Perfilado de GC
+# Sub-module: Memory and GC Profiling
 
-## 1. El Profiler es el único diagnóstico real
+## 1. The Profiler is the Only Real Diagnosis
 
-NUNCA adivines un problema de rendimiento basándote en la "sensación" de lag.
+NEVER guess a performance issue based on "lag feel."
 
-*   **Gasto de GC (Garbage Collector):** Busca las barras turquesas en el CPU Profiler. Identifica qué script está alocando memoria cada frame.
-*   **Deep Profile:** Adviértele al usuario que "Deep Profile" ralentiza masivamente el Editor, pero es necesario para encontrar el método exacto en jerarquías profundas.
+*   **GC Alloc (Garbage Collector):** Look for the light blue (teal) bars in the CPU Profiler. Identify which script is allocating memory every frame.
+*   **Deep Profile:** Warn the user that "Deep Profile" massively slows down the Editor but is necessary to find the exact method in deep hierarchies.
 
 ---
 
-## 2. Leaks (Fugas de Memoria)
+## 2. Leaks (Memory Leaks)
 
-*   **Eventos no desuscritos:** El culpable #1 de fugas en C#. Asegúrate de que cada `OnEnable` tenga su correspondiente desuscripción en `OnDisable`.
-*   **Por qué:** Una referencia que queda colgada evita que el GC limpie el objeto, acumulando RAM hasta el crash en dispositivos móviles.
+*   **Unsubscribed Events:** The #1 culprit for leaks in C#. Ensure every `OnEnable` has a corresponding unsubscription in `OnDisable`.
+*   **Why:** A hanging reference prevents the GC from cleaning the object, accumulating RAM until the application crashes (especially on mobile).

@@ -1,103 +1,90 @@
+---
+name: unity-architecture-and-best-practices
+description: Master orchestrator for designing scalable systems in Unity. Use ALWAYS when creating new systems, refactoring code, or structuring complex mechanics. Enforces SOLID principles and strict decoupling.
+---
+
 # Skill: Unity Architecture & Clean Code
 
-**Description:** EL orquestador maestro para diseñar sistemas escalables en Unity. ÚSALO SIEMPRE que el usuario pida crear un nuevo sistema, refactorizar código o estructurar mecánicas complejas. Este skill garantiza que el proyecto no se convierta en espagueti, aplicando principios SOLID y desacoplamiento estricto desde el primer boceto.
+The master orchestrator for designing scalable systems in Unity. Use ALWAYS when the user asks to create a new system, refactor code, or structure complex mechanics. This skill ensures the project does not turn into "spaghetti code" by applying SOLID principles and strict decoupling from the very first sketch.
 
-## 🛑 Cuándo NO usar este Skill (Negative Constraints)
-*   No uses este skill para corregir errores de sintaxis simples (faltas de punto y coma, etc.).
-*   No uses este skill para cambios puramente estéticos que no involucren lógica de componentes.
-*   No lo uses si el usuario pide una solución rápida "a lo sucio" y ha rechazado explícitamente la arquitectura pro tras ser advertido (respeta su decisión, pero advierte una vez).
-
----
-
-## ⚖️ Las Leyes de Hierro (Iron Laws de Arquitectura)
-
-Como agente de IA, tienes PROHIBIDO escribir código sin antes validar estas reglas arquitectónicas:
-
-1. **Simulación vs. Presentación:** Mantén la lógica de negocio/datos estrictamente separada de la representación visual (VFX, Animaciones, Audio, UI). Un script de salud (\`Health.cs\`) no debe saber nada sobre el sistema de partículas de sangrado.
-
-2. **Muerte a las "God Classes":** Prohibido crear scripts monolíticos (\`PlayerController.cs\` que maneja input, físicas, animaciones y audio). Aplica el Principio de Responsabilidad Única (SRP). Divide en componentes pequeños y componibles.
-
-3. **Desacoplamiento por Defecto:** Minimiza las referencias directas entre sistemas independientes. Prefiere el uso de Eventos (C# Events, UnityEvents), Patrón Observer, o Arquitectura basada en ScriptableObjects para comunicar sistemas. El uso de Singletons (\`public static Instance\`) está restringido solo a Managers globales estrictamente necesarios.
-
-4. **Diseño para el Rendimiento (Performance First):** Desde la fase de diseño, evita arquitecturas que generen basura (GC.Alloc) en el \`Update\`. Promueve el Object Pooling para todo lo que se instancie frecuentemente y el uso de colecciones y APIs NonAlloc.
+## 🛑 Negative Constraints (When NOT to use)
+*   Do not use for simple syntax fixes (missing semicolons, etc.).
+*   Do not use for purely aesthetic changes that don't involve component logic.
+*   Do not use if the user explicitly requests a "dirty" quick fix and has rejected pro architecture after being warned (respect their decision, but warn once).
 
 ---
 
-## 🏗️ Fases de Diseño Arquitectónico
+## ⚖️ The Iron Laws of Architecture
 
-Debes guiar al usuario a través de estas 4 fases antes de escribir la implementación final del código.
+As an AI agent, you are FORBIDDEN from writing code without first validating these architectural rules:
 
-### Fase 1: Levantamiento de Requisitos y Alcance
+1. **Simulation vs. Presentation:** Keep business/data logic strictly separate from visual representation (VFX, Animations, Audio, UI). A `Health.cs` script should know nothing about the blood particle system.
 
-Antes de programar, entiende qué debe hacer el sistema dentro del juego completo.
+2. **Death to God Classes:** Forbidden to create monolithic scripts (e.g., a `PlayerController.cs` handling input, physics, animations, and audio). Apply the Single Responsibility Principle (SRP). Break into small, composable components.
 
-* ¿Cuáles son las entradas y salidas del sistema?
+3. **Decoupling by Default:** Minimize direct references between independent systems. Prefer Events (C# Events, UnityEvents), the Observer Pattern, or ScriptableObject-based architecture for communication. Use Singletons (`public static Instance`) only for strictly necessary global Managers.
 
-* ¿Con qué otros sistemas necesita comunicarse?
-
-* ¿Es un sistema que existirá en una sola escena, o persistirá en todo el juego?
-
-### Fase 2: Diseño de Componentes y Desacoplamiento
-
-Propón una estructura de componentes. No escribas código aún, explica la separación.
-
-* Define qué script manejará los datos (Data), cuál la lógica (Controller/Logic) y cuál el feedback visual/UI (View).
-
-* Define cómo se comunicarán (ej. *"El \`Health.cs\` emitirá un evento \`OnDamageTaken\`, y el \`VFXManager.cs\` estará escuchando ese evento"*).
-
-### Fase 3: Selección de Patrones de Diseño
-
-Evalúa si el problema se resuelve limpiamente con un patrón estándar.
-
-* Menciona si aplica un *State Machine* (para IA o estados del jugador), un *Factory/Object Pool* (para proyectiles/enemigos), o un *Strategy* (para diferentes tipos de armas).
-
-### Fase 4: Propuesta de Interfaces y Estructura (Esqueleto)
-
-Presenta las firmas de las clases, las interfaces y las variables expuestas (\`[SerializeField]\`).
-
-* Permite al usuario revisar la estructura propuesta. Si el usuario la aprueba, procede a generar la implementación detallada.
+4. **Performance-First Design:** Avoid architectures that generate garbage (GC.Alloc) in `Update`. Promote Object Pooling for frequently instantiated objects and use Non-Allocating APIs/collections.
 
 ---
 
-## 🗂️ Enrutamiento de Sub-módulos
+## 🏗️ Architectural Design Phases
 
-Aplica las reglas específicas de estos submódulos según el contexto de la solicitud del usuario:
+Guide the user through these 4 phases before writing the final code implementation.
 
-* **[01-planning-and-workflow.md]:** Para planificación de tareas, version control y prototipado rápido.
+### Phase 1: Requirements and Scope Gathering
+Understand what the system must do within the context of the full game.
+* What are the system's inputs and outputs?
+* Which other systems does it need to talk to?
+* Is it scene-specific or persistent across the entire game?
 
-* **[02-clean-code-and-conventions.md]:** Para nomenclatura, uso correcto de modificadores de acceso, y encapsulación (Structs vs Clases).
+### Phase 2: Component Design and Decoupling
+Propose a component structure. Explain the separation before writing code.
+* Define which script handles Data, Logic (Controller), and Visual Feedback (View).
+* Define communication (e.g., *"Health.cs will emit an OnDamageTaken event, and VFXManager.cs will listen to it"*).
 
-* **[03-core-design-patterns.md]:** Cuando implementes State Machines, Observers, Event Channels (ScriptableObjects), o Factories.
+### Phase 3: Design Pattern Selection
+Evaluate if a standard pattern solves the problem cleanly.
+* Mention if a *State Machine* (for AI/Player states), a *Factory/Object Pool* (for projectiles), or a *Strategy Pattern* (for weapon types) applies.
 
-* **[04-modular-systems-and-glue-code.md]:** Para conectar componentes entre sí sin crear espagueti, uso de dependencias explícitas (\`[RequireComponent]\`).
-
-* **[05-ui-and-presentation-architecture.md]:** Exclusivo para separar la lógica del juego de los menús (MVP/MVC), usando UGUI o UI Toolkit.
-
-* **[06-combat-and-vfx-decoupling.md]:** Para mecánicas de acción, hitboxes, determinismo en \`FixedUpdate\`, y disparadores de animación seguros.
-
-* **[07-performance-coding-patterns.md]:** Para micro-arquitectura eficiente: evitar \`GetComponent\` en Update, pre-cacheo, Time-slicing y APIs sin alocación.
+### Phase 4: Interface and Skeleton Proposal
+Present class signatures, interfaces, and exposed variables (`[SerializeField]`).
+* Let the user review the structure. Once approved, generate the detailed implementation.
 
 ---
 
-## 🛠️ Herramientas de Auditoría y Scaffolding (Scripts Ejecutables)
+## 🗂️ Sub-module Routing
 
-Como Arquitecto de Software, NUNCA debes confiar ciegamente en que el código heredado o recién escrito cumple con estas directivas. Tienes PERMISO EXPLÍCITO para ejecutar estas herramientas de diagnóstico en la terminal:
+Apply specific rules from these sub-modules based on the context:
 
-1. **El "Policía" del Clean Code (`unity-doctor.js`)**
-   * **Cuándo usarlo:** ANTES de proponer una refactorización de rendimiento, o cuando se te pida revisar un script o sistema (Code Review).
-   * **Comando:** Ejecuta `node execution/unity-doctor.js`
-   * **Acción:** Este linter analizará el código en busca de "God Classes", `GetComponent` en métodos `Update`, y violaciones de UI Toolkit/VFX. Lee el archivo `doctor-report.md` resultante y úsalo para justificar tus refactorizaciones.
+* **[01-planning-and-workflow.md]:** Task planning, version control, and rapid prototyping (Grayboxing).
+* **[02-clean-code-and-conventions.md]:** Naming conventions, access modifiers, and encapsulation (Structs vs Classes).
+* **[03-core-design-patterns.md]:** State Machines, Observers, Event Channels (ScriptableObjects), and Factories.
+* **[04-modular-systems-and-glue-code.md]:** Connecting components without spaghetti, explicit dependencies (`[RequireComponent]`).
+* **[05-ui-and-presentation-architecture.md]:** Decoupling game logic from menus (MVP/MVC) using UGUI or UI Toolkit.
+* **[06-combat-and-vfx-decoupling.md]:** Action mechanics, hitboxes, FixedUpdate determinism, and safe animation triggers.
+* **[07-performance-coding-patterns.md]:** Efficient micro-architecture: avoiding GetComponent in Update, caching, and non-allocating APIs.
 
-2. **El Generador de Arquitectura (`scaffold_repo.py`)**
-   * **Cuándo usarlo:** Al inicio de un proyecto o cuando el usuario pida establecer la estructura base para no tener los scripts desordenados en `Assets/`.
-   * **Comando:** Ejecuta `python execution/scaffold_repo.py`
-   * **Acción:** Esto creará instantáneamente la estructura de carpetas obligatoria (Core, Gameplay, UI, Net, Data, etc.) dentro de `Assets/_Project/`.
+---
 
-3. **Auditor de Paquetes y Seguridad (`package-audit.js`)**
-   * **Cuándo usarlo:** Cuando se importen assets de terceros, haya problemas visuales masivos (Shaders rosados en URP), o para verificar que no haya código malicioso.
-   * **Comando:** Ejecuta `node execution/package-audit.js`
-   * **Acción:** Analiza el uso inseguro de `System.IO`/`System.Net` y detecta Shaders "Legacy" que necesitan ser convertidos a HLSL/URP.
+## 🛠️ Audit Tools & Scaffolding (Executable Scripts)
 
-## 🛑 DIRECTIVA ESTRICTA DEL SISTEMA
+As a Software Architect, NEVER blindly trust legacy or freshly written code. You have EXPLICIT PERMISSION to run these diagnostic tools in the terminal:
 
-CUANDO EL USUARIO SOLICITE UN NUEVO SISTEMA O MECÁNICA, TU PRIMERA RESPUESTA NO DEBE SER EL CÓDIGO COMPLETO. TU PRIMERA RESPUESTA DEBE SER UN DESGLOSE ARQUITECTÓNICO (FASES 1, 2 Y 3) EXPLICANDO EL "POR QUÉ" DETRÁS DE CADA DECISIÓN. SOLO CUANDO EL USUARIO VALIDE EL ENFOQUE ARQUITECTÓNICO, GENERARÁS LOS SCRIPTS. ESTO PREVIENE LA GENERACIÓN DE DEUDA TÉCNICA Y CÓDIGO DIFÍCIL DE MANTENER.
+1. **Clean Code "Police" (`unity-doctor.js`)**
+   * **When:** BEFORE proposing performance refactors or during Code Reviews.
+   * **Command:** `node framework/execution/unity-doctor.js` (Note: adjust path if needed).
+   * **Action:** Analyzes for "God Classes", Update-loop allocations, and UI Toolkit violations.
+
+2. **Architecture Scaffolder (`scaffold_repo.py`)**
+   * **When:** At project start or when organizing `Assets/`.
+   * **Command:** `python framework/execution/scaffold_repo.py`
+   * **Action:** Creates the mandatory folder structure (Core, Gameplay, UI, etc.) in `Assets/_Project/`.
+
+3. **Package & Security Auditor (`package-audit.js`)**
+   * **When:** Importing 3rd-party assets or fixing rendering issues (Pink Shaders).
+   * **Command:** `node framework/execution/package-audit.js`
+
+## 🛑 STRICT SYSTEM DIRECTIVE
+
+WHEN THE USER REQUESTS A NEW SYSTEM, YOUR FIRST RESPONSE MUST NOT BE THE COMPLETE CODE. IT MUST BE AN ARCHITECTURAL BREAKDOWN (PHASES 1, 2, AND 3) EXPLAINING THE "WHY" BEHIND EACH DECISION. ONLY WHEN THE USER VALIDATES THE APPROACH SHOULD YOU GENERATE SCRIPTS. THIS PREVENTS TECHNICAL DEBT.

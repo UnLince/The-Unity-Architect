@@ -1,47 +1,46 @@
 ---
 name: unity-arch-clean-code-conventions
-description: Estándares de nomenclatura y encapsulación para Unity. Úsalo para definir si un dato debe ser Struct o Clase, y para asegurar que el Inspector de Unity se mantenga limpio y profesional.
-tags: [architecture, clean-code, naming]
+description: Naming standards and encapsulation for Unity. Defines Struct vs. Class usage and ensures the Unity Inspector remains professional.
 ---
 
-# Submódulo: Clean Code, Convenciones y Nomenclatura Unity
+# Sub-module: Clean Code, Conventions, and Unity Naming
 
-**Propósito:** Asegurar que el código sea legible, mantenible y profesional, siguiendo los estándares específicos de la industria de videojuegos y el motor Unity.
-
----
-
-## 1. Nomenclatura y Estética del Código
-
-En proyectos de Unity colaborativos, la consistencia es más importante que la preferencia personal.
-
-* **Classes & Methods:** PascalCase (ej. `PlayerStats`, `TakeDamage()`).
-* **Private Variables:** camelCase con prefijo de guion bajo (ej. `_currentHealth`). **Por qué:** Facilita la identificación rápida de variables de clase vs variables locales en métodos largos.
-* **Public Variables:** PascalCase (ej. `MaxHealth`).
-* **Constants & Enums:** PASCAL_CASE o PascalCase según equipo, pero nunca números mágicos.
+**Purpose:** Ensure code is readable, maintainable, and professional, following industry standards for Unity and C#.
 
 ---
 
-## 2. Encapsulación y el Inspector de Unity
+## 1. Naming and Code Aesthetics
 
-Unity rompe la encapsulación clásica de C# para facilitar el diseño. Debes navegar este compromiso con inteligencia.
+In collaborative projects, consistency is more important than personal preference.
 
-* **Secret de Senior:** Prefiere `[SerializeField] private` sobre `public`. **Por qué:** Expone la variable al diseñador en el Inspector sin permitir que otros scripts la manipulen de forma desordenada, manteniendo la integridad de los datos.
-* **Variables de solo lectura en Inspector:** Si una variable es informativa (como "IsGrounded"), úsala con `[field: SerializeField] public bool IsGrounded { get; private set; }`.
-
----
-
-## 3. Clases vs. Structs en Unity
-
-La elección afecta masivamente la memoria y el rendimiento (GC Alloc).
-
-* **Usa Clases (Reference Types):** Para objetos con identidad propia (Jugador, Enemigo, Manager).
-* **Usa Structs (Value Types):** Para contenedores de datos puros y pequeños que se crean y destruyen miles de veces (ej. `DamageData`, `InventorySlot`). **Por qué:** Los structs viven en el Stack y no generan basura para el Garbage Collector, optimizando los FPS en sistemas masivos.
+* **Classes & Methods:** PascalCase (e.g., `PlayerStats`, `TakeDamage()`).
+* **Private Variables:** camelCase with an underscore prefix (e.g., `_currentHealth`). **Why:** Quick identification of class variables vs local variables in long methods.
+* **Public Variables/Properties:** PascalCase (e.g., `MaxHealth`).
+* **Constants & Enums:** PASCAL_CASE or PascalCase per team standard, but never magic numbers.
 
 ---
 
-## 4. El "Inspector" es parte del código
+## 2. Encapsulation and the Unity Inspector
 
-Un Inspector desordenado causa errores humanos en el diseño de niveles.
+Unity balances C# encapsulation with design flexibility. Navigate this trade-off intelligently.
 
-* Usa atributos de organización: `[Header("Settings")]`, `[Space]`, `[Tooltip("Descripción del campo")]`.
-* **Prohibido:** Dejar variables públicas sin tooltip si su función no es obvia. El tooltip es la documentación viva para el usuario.
+* **Senior Secret:** Prefer `[SerializeField] private` over `public`. **Why:** Exposes variables to designers in the Inspector without letting other scripts manipulate them haphazardly.
+* **Read-only variables in Inspector:** For informational fields (like "IsGrounded"), use `[field: SerializeField] public bool IsGrounded { get; private set; }`.
+
+---
+
+## 3. Classes vs. Structs in Unity
+
+This choice massively affects memory and performance (GC Alloc).
+
+* **Use Classes (Reference Types):** For objects with identity (Player, Enemy, Manager).
+* **Use Structs (Value Types):** For small, pure data containers created thousands of times (e.g., `DamageData`, `InventorySlot`). **Why:** Structs live on the Stack and don't generate Garbage Collector pressure, optimizing FPS.
+
+---
+
+## 4. The Inspector is Part of the Code
+
+A messy Inspector causes human error in level design.
+
+* Use organization attributes: `[Header("Settings")]`, `[Space]`, `[Tooltip("Field description")]`.
+* **Forbidden:** Leaving public variables without tooltips if their function isn't obvious. The tooltip is living documentation for the designer.

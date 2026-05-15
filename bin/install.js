@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 /**
- * The Unity Architect - CLI Installer (v1.2.2)
+ * The Unity Architect - CLI Installer (v1.3.0)
  * 
  * Unified installation into a single 'The-Unity-Architect' folder.
  * Setup for Skills, Execution scripts, Mega-Brain Wiki and AI Agent configuration.
@@ -124,7 +124,7 @@ async function main() {
     console.log('\x1b[35m     ██║   ██╔══██║██╔══╝      ██║   ██║██║╚██╗██║██║   ██║     ╚██╔╝  \x1b[0m');
     console.log('\x1b[35m     ██║   ██║  ██║███████╗    ╚██████╔╝██║ ╚████║██║   ██║      ██║   \x1b[0m');
     console.log('\x1b[35m     ╚═╝   ╚═╝  ╚═╝╚══════╝     ╚═════╝ ╚═╝  ╚════╝╚═╝   ╚═╝      ╚═╝   \x1b[0m');
-    console.log('\x1b[1m                      A R C H I T E C T  v1.2.2\x1b[0m');
+    console.log('\x1b[1m                      A R C H I T E C T  v1.3.0\x1b[0m');
     console.log('');
 
     if (isDryRun) log.warn('Running in DRY-RUN mode.\n');

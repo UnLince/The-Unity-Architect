@@ -1,31 +1,38 @@
+---
+name: unity-issue-slicer
+description: Technical task breakdown for Unity. Translates the GDD into independent, vertical Issues to ensure modular, component-based implementation.
+---
+
 # Skill: Unity Issue Slicer (Task Architect)
 
-**Description:** El paso final del pipeline de diseño. ÚSALO cuando el GDD/PRD haya sido aprobado. Tu misión es desglosar el documento en una lista de tareas (Issues) técnicas, independientes y ejecutables. Este skill garantiza que el código se construya de forma modular (Component-Based) y no como un monolito.
+The final step of the design pipeline. Use ONLY when the GDD/PRD has been approved. Your mission is to break down the document into a list of technical, independent, and executable Issues. This skill ensures the code is built modularly (Component-Based) and not as a monolith.
 
 ---
 
-## ⚖️ Las Leyes de Hierro (Iron Laws)
+## ⚖️ The Iron Laws
 
-1. **Tracer Bullets (Cortes Verticales):** Cada Issue debe entregar una ruta funcional de extremo a extremo a través de todas las capas (Input -> Lógica -> Feedback Visual). NUNCA dividas el trabajo horizontalmente (ej. "Hacer todos los scripts de datos" y luego "Hacer toda la UI").
-2. **Independencia de Componentes:** Cada tarea debe representar un componente de Unity atómico. Si una tarea requiere modificar 5 scripts, está mal cortada.
-3. **Definición de Hecho (DoD):** Cada Issue debe incluir un criterio de aceptación claro y comprobable (ej. "El cubo cambia a color rojo al recibir daño").
-4. **Orden Lógico:** Las tareas deben estar numeradas por orden de dependencia. Un Issue debe marcar claramente qué otro Issue lo bloquea.
+1. **Tracer Bullets (Vertical Slices):** Each Issue must deliver an end-to-end functional path through all layers (Input -> Logic -> Visual Feedback). NEVER split work horizontally (e.g., "Make all data scripts" then "Make all UI").
+2. **Component Independence:** Each task should represent an atomic Unity component. If a task requires modifying 5 scripts, it is poorly sliced.
+3. **Definition of Done (DoD):** Each Issue must include a clear, testable acceptance criterion (e.g., "The cube turns red upon receiving damage").
+4. **Logical Order:** Tasks must be numbered by dependency order. An Issue must clearly state which other Issue blocks it.
+
 ---
 
-## 🛠️ El Listado de Tareas (The Backlog)
+## 🛠️ The Backlog (Task List)
 
-Debes generar una lista de Issues con el siguiente formato:
+Generate a list of Issues using the following format:
 
-### [Issue #X] - [Nombre de la Tarea]
-*   **Tipo:** `[Editor]` (Requiere que el humano configure Prefabs/Referencias en Unity) o `[Script]` (Pura lógica C# que la IA puede implementar autónomamente).
-*   **Descripción:** Breve resumen de lo que se va a construir de extremo a extremo.
-*   **Bloqueado por:** Ninguno, o el número del Issue que debe terminarse primero.
-*   **Componente(s) Afectado(s):** Nombres sugeridos de las clases.
-*   **Criterio de Aprobación:** ¿Cómo sabemos que funciona en Play Mode?
+### [Issue #X] - [Task Name]
+*   **Type:** `[Editor]` (Requires human configuration of Prefabs/References in Unity) or `[Script]` (Pure C# logic that the AI can implement autonomously).
+*   **Description:** Brief summary of the end-to-end functionality to be built.
+*   **Blocked By:** None, or the ID of the Issue that must be finished first.
+*   **Affected Component(s):** Suggested class names.
+*   **Acceptance Criteria:** How do we know it works in Play Mode?
+
 ---
 
-## 🛑 DIRECTIVA ESTRICTA DEL SISTEMA
+## 🛑 STRICT SYSTEM DIRECTIVE
 
-Una vez generada la lista, debes preguntar al usuario por cuál tarea quiere empezar. **Solo en este momento**, y refiriéndote a una tarea específica, tienes permitido activar el skill de `unity-architecture-and-best-practices` para comenzar a escribir el código. 
+Once the list is generated, you must ask the user which task they want to start with. **Only at this moment**, and referring to a specific task, are you allowed to activate the `unity-architecture-and-best-practices` skill to begin coding.
 
-*"Aquí tienes el desglose técnico. He dividido la funcionalidad en [X] componentes independientes para mantener la arquitectura limpia. ¿Por cuál de estos Issues quieres que comencemos la implementación?"*
+*"Here is the technical breakdown. I have sliced the functionality into [X] independent components to keep the architecture clean. Which of these Issues would you like to start implementing?"*

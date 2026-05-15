@@ -1,49 +1,46 @@
-# Skill: Unity Feature Pipeline (Product Engineer)
+---
+name: unity-feature-pipeline
+description: Comprehensive workflow for conceiving, documenting, and implementing new features in Unity. Enforces a design-first approach with three mandatory phases.
+---
 
-**Description:** El flujo de trabajo completo para concebir, documentar e implementar nuevas features y sistemas en Unity. ÚSALO SIEMPRE que el usuario proponga construir algo nuevo (ej. "Haz un sistema de inventario", "Agrega una escopeta"). Este skill previene la generación de código frágil ("spaghetti code") obligando a diseñar antes de programar, utilizando un enfoque orientado a componentes.
+# Skill: Unity Feature Pipeline (Product Architect)
+
+The complete workflow for conceiving, documenting, and implementing new features and systems in Unity. Use ALWAYS when the user proposes building something new. This skill prevents "spaghetti code" by forcing design before programming, using a component-oriented approach and maintaining a real-time Ubiquitous Language Glossary.
 
 ---
 
-## ⚖️ Las Leyes de Hierro (Iron Laws)
+## ⚖️ The Iron Laws
 
-Como agente de IA, tienes PROHIBIDO escribir código de implementación si no se ha completado la fase de diseño y desglose.
+As an AI agent, you are FORBIDDEN from writing implementation code if the design and breakdown phases have not been completed.
 
-1. **Cero Código Prematuro:** No propongas clases de C# hasta que la fase 3 (Issue Slicer) esté terminada.
-2. **Arquitectura por Componentes:** Todas las features deben ser cortadas en componentes pequeños y aislados.
-3. **Orden de Ejecución Obligatorio:** Debes seguir las fases en este orden estricto.
-
----
-
-## 🔬 Fases del Pipeline (Routing)
-
-Debes guiar al usuario a través de estas fases en orden. Lee los submódulos correspondientes para ejecutar cada fase.
-
-### Fase 1: Recolección de Requisitos (The Grill)
-
-Antes de aceptar una idea vaga, debes hacer las preguntas difíciles para descubrir los casos borde.
-
-* 👉 **Lee `01-quest-giver.md` para conocer el cuestionario estricto.**
-
-### Fase 2: Documentación del Diseño (The GDD)
-
-Una vez resueltas las dudas, consolidas la información en un Documento de Diseño (PRD/GDD) que actuará como contrato.
-
-* 👉 **Lee `02-gdd-writer.md` para ver la plantilla de documentación.**
-
-### Fase 3: Desglose en Tareas (The Issue Slicer)
-
-Con el GDD aprobado, traduces el documento en tareas de programación (Issues) atómicas y verticales.
-
-* 👉 **Lee `03-issue-slicer.md` para las reglas de creación de issues.**
-
-### Fase 4: Implementación (Architecture & Coding)
-
-Solo cuando el usuario elija un Issue específico para comenzar, puedes empezar a escribir código. En ese momento, abandonas este pipeline y procedes con el estándar de arquitectura.
-
-* 👉 **Cambia al skill `unity-architecture-and-best-practices` para la implementación.**
+1. **Zero Premature Code:** Do not propose C# classes until Phase 3 (Issue Slicer) is finished.
+2. **Component-Based Architecture:** All features must be sliced into small, isolated components.
+3. **Mandatory Execution Order:** You must follow these phases in strict order.
 
 ---
 
-## 🛑 DIRECTIVA ESTRICTA DEL SISTEMA
+## 🔬 Pipeline Phases (Routing)
 
-Si el usuario hace una solicitud vaga o general para un nuevo sistema, INICIA INMEDIATAMENTE LA FASE 1 leyendo el submódulo `01-quest-giver.md`. NO procedas a escribir scripts hasta que todo el pipeline esté completo y se haya seleccionado un Issue específico.
+Guide the user through these phases in order. Read the corresponding sub-modules to execute each phase.
+
+### Phase 1: Requirement Gathering (The Grill)
+Before accepting a vague idea, you must ask the hard questions to discover edge cases.
+* 👉 **Read `01-quest-giver.md` for the strict interrogation protocol.**
+
+### Phase 2: Design Documentation (The GDD)
+Once doubts are resolved, consolidate the information into a Design Document (PRD/GDD) that acts as a contract.
+* 👉 **Read `02-gdd-writer.md` for the documentation template.**
+
+### Phase 3: Task Breakdown (The Issue Slicer)
+With the GDD approved, translate the document into atomic and vertical technical tasks (Issues).
+* 👉 **Read `03-issue-slicer.md` for the issue creation rules.**
+
+### Phase 4: Implementation (Architecture & Coding)
+Only when the user selects a specific Issue to begin, can you start writing code. At that moment, leave this pipeline and proceed with the architecture standard.
+* 👉 **Switch to `unity-architecture-and-best-practices` for implementation.**
+
+---
+
+## 🛑 STRICT SYSTEM DIRECTIVE
+
+If the user makes a vague or general request for a new system, IMMEDIATELY START PHASE 1 by reading `01-quest-giver.md`. DO NOT proceed to write scripts until the entire pipeline is complete and a specific Issue has been selected.
